@@ -1,0 +1,36 @@
+{
+    "list": [
+        {
+            "id": "pathxplore-summary",
+            "title": "PathXplore™ Career Fit Report",
+            "description": "A detailed 1-page summary of your top career matches from the PathXplore engine.",
+            "pages": 1,
+            "requiresAssessment": true,
+            "requiresGoalPlan": false
+        },
+        {
+            "id": "goalmint-summary",
+            "title": "GoalMint™ Planner Report",
+            "description": "A 1-page overview of your personalized SMART goal plan for your chosen career.",
+            "pages": 1,
+            "requiresAssessment": true,
+            "requiresGoalPlan": true
+        },
+        {
+            "id": "mentorsuite-summary",
+            "title": "MentorSuite™ Conversation Summary",
+            "description": "A 1-page summary of key insights and reflections from your conversation with the AI Mentor.",
+            "pages": 1,
+            "requiresAssessment": true,
+            "requiresGoalPlan": false
+        },
+        {
+            "id": "final-consolidated",
+            "title": "Final Consolidated Career Blueprint",
+            "description": "A comprehensive 7-page report consolidating your assessment results, career matches, and goal plan.",
+            "pages": 7,
+            "requiresAssessment": true,
+            "requiresGoalPlan": true
+        }
+    ]
+}

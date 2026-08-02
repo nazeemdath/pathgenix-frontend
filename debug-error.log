@@ -1,0 +1,390 @@
+[2025-12-08T10:34:27.772Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async suggestCareers (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:283:29)
+    at async getCareerSuggestions (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:780:29)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career counselor AI named "Path-GeniX". Your role is to provide personalized, insi...
+
+[2025-12-08T10:52:19.834Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async suggestCareers (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:283:29)
+    at async getCareerSuggestions (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:780:29)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career counselor AI named "Path-GeniX". Your role is to provide personalized, insi...
+
+[2025-12-09T05:50:02.117Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async suggestCareers (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:283:29)
+    at async getCareerSuggestions (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:780:29)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career counselor AI named "Path-GeniX". Your role is to provide personalized, insi...
+
+[2025-12-09T06:34:41.934Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async suggestCareers (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:283:29)
+    at async getCareerSuggestions (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:780:29)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career counselor AI named "Path-GeniX". Your role is to provide personalized, insi...
+
+[2025-12-09T06:45:28.622Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async suggestCareers (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:283:29)
+    at async getCareerSuggestions (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:780:29)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career counselor AI named "Path-GeniX". Your role is to provide personalized, insi...
+
+[2025-12-09T06:48:34.701Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async suggestCareers (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:283:29)
+    at async getCareerSuggestions (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:780:29)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career counselor AI named "Path-GeniX". Your role is to provide personalized, insi...
+
+[2025-12-09T10:26:57.745Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async suggestCareers (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:283:29)
+    at async getCareerSuggestions (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:781:29)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career counselor AI named "Path-GeniX". Your role is to provide personalized, insi...
+
+[2025-12-09T10:40:51.201Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async suggestCareers (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:283:29)
+    at async getCareerSuggestions (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:781:29)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career counselor AI named "Path-GeniX". Your role is to provide personalized, insi...
+
+[2025-12-09T19:00:29.834Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async generateGoals (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:375:28)
+    at async getGeneratedGoals (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:841:23)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career and academic advisor AI named "GoalMint". Your task is to create a comprehe...
+
+[2025-12-10T10:45:48.296Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async generateGoals (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:375:28)
+    at async getGeneratedGoals (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:841:23)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career and academic advisor AI named "GoalMint". Your task is to create a comprehe...
+
+[2025-12-11T10:40:45.541Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async generateGoals (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:375:28)
+    at async getGeneratedGoals (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:841:23)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career and academic advisor AI named "GoalMint". Your task is to create a comprehe...
+
+[2025-12-11T10:41:03.231Z] Error in generateJSON: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Stack: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent: [404 Not Found] models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2877:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:2849:9)
+    at async generateContent (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\node_modules_74757c43._.js:3289:22)
+    at async generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:128:24)
+    at async generateGoals (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:375:28)
+    at async getGeneratedGoals (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__53321f63._.js:841:23)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career and academic advisor AI named "GoalMint". Your task is to create a comprehe...
+
+[2025-12-12T10:58:20.373Z] Error in generateJSON: Groq API request failed: 400 - {"error":{"message":"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for more details.","type":"invalid_request_error","code":"json_validate_failed","failed_generation":"{\n    \"careerName\": \"Operations Analyst\",\n    \"careerDescription\": \"Operations Analysts examine workflows, business procedures, and data to identify inefficiencies, recommend improvements, and help organizations run smoothly and profitably.\",\n    \"matchExplanation\": \"Your moderate-to-high conscientiousness and solid logical-reasoning scores indicate you enjoy spotting patterns and fixing systems. The role’s balance of structured investigation and clear deliverables aligns with your CVQ preference for stability and tangible results while keeping social demands at a comfortable level.\"\n  },\n  {\n    \"careerName\": \"Data Visualization Specialist\",\n    \"careerDescription\": \"These professionals transform complex data sets into clear, interactive charts and dashboards that help stakeholders make informed decisions quickly.\",\n    \"matchExplanation\": \"Your strongest self-rated skills are in data analysis and computer work, and you scored well on numeric pattern questions, showing aptitude for translating numbers into insight. The position’s mix of independent focus and periodic collaboration suits your moderate extraversion and high need for autonomy.\"\n  },\n  {\n    \"careerName\": \"Compliance Officer\",\n    \"careerDescription\": \"Compliance Officers ensure companies follow industry regulations by reviewing processes, preparing reports, and implementing risk-mitigation policies.\",\n    \"matchExplanation\": \"Your conscientious personality ratings reveal diligence and rule adherence, while your cognitive results demonstrate the logical accuracy needed to interpret regulations. The predictable structure and clear ethical purpose feed your CVQ values of job security and work-life balance.\"\n  },\n  \"careerName\": \"Technical Writer\",\n  \"careerDescription\": \"Technical Writers craft user manuals, standard operating procedures, and online help content that translate complex information into clear, concise language.\",\n  \"matchExplanation\": \"Your solid verbal ability and mid-range openness suggest you can learn new topics quickly and explain them logically. This largely independent, project-based role respects your moderate introversion and high value for flexibility, while your self-reported writing confidence gives you an immediate edge.\"\n  },\n  {\n    \"careerName\": \"Quality Assurance Tester\",\n    \"careerDescription\": \"QA Testers systematically check software or products for defects, document issues, and verify fixes to ensure customers receive reliable solutions.\",\n    \"matchExplanation\": \"Your detail-oriented conscientiousness and strong problem-solving answers show persistence in hunting inconsistencies. The repetitive yet analytical nature of testing fits your moderate extraversion and need for predictable routines, while your computer confidence supports rapid learning of testing tools.\"\"\\n  }"}}
+
+Stack: Error: Groq API request failed: 400 - {"error":{"message":"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for more details.","type":"invalid_request_error","code":"json_validate_failed","failed_generation":"{\n    \"careerName\": \"Operations Analyst\",\n    \"careerDescription\": \"Operations Analysts examine workflows, business procedures, and data to identify inefficiencies, recommend improvements, and help organizations run smoothly and profitably.\",\n    \"matchExplanation\": \"Your moderate-to-high conscientiousness and solid logical-reasoning scores indicate you enjoy spotting patterns and fixing systems. The role’s balance of structured investigation and clear deliverables aligns with your CVQ preference for stability and tangible results while keeping social demands at a comfortable level.\"\n  },\n  {\n    \"careerName\": \"Data Visualization Specialist\",\n    \"careerDescription\": \"These professionals transform complex data sets into clear, interactive charts and dashboards that help stakeholders make informed decisions quickly.\",\n    \"matchExplanation\": \"Your strongest self-rated skills are in data analysis and computer work, and you scored well on numeric pattern questions, showing aptitude for translating numbers into insight. The position’s mix of independent focus and periodic collaboration suits your moderate extraversion and high need for autonomy.\"\n  },\n  {\n    \"careerName\": \"Compliance Officer\",\n    \"careerDescription\": \"Compliance Officers ensure companies follow industry regulations by reviewing processes, preparing reports, and implementing risk-mitigation policies.\",\n    \"matchExplanation\": \"Your conscientious personality ratings reveal diligence and rule adherence, while your cognitive results demonstrate the logical accuracy needed to interpret regulations. The predictable structure and clear ethical purpose feed your CVQ values of job security and work-life balance.\"\n  },\n  \"careerName\": \"Technical Writer\",\n  \"careerDescription\": \"Technical Writers craft user manuals, standard operating procedures, and online help content that translate complex information into clear, concise language.\",\n  \"matchExplanation\": \"Your solid verbal ability and mid-range openness suggest you can learn new topics quickly and explain them logically. This largely independent, project-based role respects your moderate introversion and high value for flexibility, while your self-reported writing confidence gives you an immediate edge.\"\n  },\n  {\n    \"careerName\": \"Quality Assurance Tester\",\n    \"careerDescription\": \"QA Testers systematically check software or products for defects, document issues, and verify fixes to ensure customers receive reliable solutions.\",\n    \"matchExplanation\": \"Your detail-oriented conscientiousness and strong problem-solving answers show persistence in hunting inconsistencies. The repetitive yet analytical nature of testing fits your moderate extraversion and need for predictable routines, while your computer confidence supports rapid learning of testing tools.\"\"\\n  }"}}
+
+    at generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__5938c8c6._.js:182:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async suggestCareers (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__5938c8c6._.js:349:29)
+    at async getCareerSuggestions (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__5938c8c6._.js:856:29)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career counselor AI named "Path-GeniX". Your role is to provide personalized, insi...
+
+[2025-12-15T05:18:54.397Z] Error in generateJSON: Groq API request failed: 400 - {"error":{"message":"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for more details.","type":"invalid_request_error","code":"json_validate_failed","failed_generation":"{\n    \"careerName\": \"UX Designer\",\n    \"careerDescription\": \"UX Designers craft the overall feel of digital products, balancing user needs with business goals through research, wire-framing, prototyping, and usability testing.\",\n    \"matchExplanation\": \"Your high Artistic and Enterprising interests, coupled with above-average verbal confidence, indicate you will enjoy translating abstract ideas into intuitive interfaces while advocating for the user.\"\n  },\n  {\n    \"careerName\": \"Data Analyst\",\n    \"careerDescription\": \"Data Analysts collect, clean, and interpret data to uncover trends that guide strategic decisions across marketing, operations, finance, and product development.\",\n    \"matchExplanation\": \"Your strong Investigative orientation and solid logical-reasoning score show you like asking questions of data and spotting patterns that others miss, a daily staple of this role.\"\n  },\n  {\n   careerName\": \"Content Strategist\",\\n    \"careerDescription\": \"Content Strategists plan, create, and govern written and multimedia material so that every piece aligns with brand voice and user journey, maximizing engagement and conversion.\",\n    \"matchExplanation\": \"With high verbal self-efficacy and an Artistic lean, you can blend creativity with structure, ensuring stories are both compelling and consistent across platforms.\"\n  },\n  {\n    \"careerName\": \"Marketing Analyst\",\n    \"careerDescription\": \"Marketing Analysts turn campaign and customer data into actionable insights, optimizing spend and messaging to grow revenue and market share.\",\n    \"matchExplanation\": \"Your Enterprising interest plus confidence in problem-solving suggest you enjoy experimenting and measuring results, perfect for iterating fast in digital campaigns.\"\n  },\n  {\n    \"careerName\": \"Product Manager\",\n    \"careerDescription\": \"Product Managers sit at the intersection of business, technology, and user experience, defining product vision, prioritizing features, and coordinating cross-functional teams to deliver value.\",\n    \"matchExplanation\": \"Moderate Extraversion and balanced RIASEC scores equip you to align engineering, design, and business stakeholders while keeping the end user front and center.\"\n  }"}}
+
+Stack: Error: Groq API request failed: 400 - {"error":{"message":"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for more details.","type":"invalid_request_error","code":"json_validate_failed","failed_generation":"{\n    \"careerName\": \"UX Designer\",\n    \"careerDescription\": \"UX Designers craft the overall feel of digital products, balancing user needs with business goals through research, wire-framing, prototyping, and usability testing.\",\n    \"matchExplanation\": \"Your high Artistic and Enterprising interests, coupled with above-average verbal confidence, indicate you will enjoy translating abstract ideas into intuitive interfaces while advocating for the user.\"\n  },\n  {\n    \"careerName\": \"Data Analyst\",\n    \"careerDescription\": \"Data Analysts collect, clean, and interpret data to uncover trends that guide strategic decisions across marketing, operations, finance, and product development.\",\n    \"matchExplanation\": \"Your strong Investigative orientation and solid logical-reasoning score show you like asking questions of data and spotting patterns that others miss, a daily staple of this role.\"\n  },\n  {\n   careerName\": \"Content Strategist\",\\n    \"careerDescription\": \"Content Strategists plan, create, and govern written and multimedia material so that every piece aligns with brand voice and user journey, maximizing engagement and conversion.\",\n    \"matchExplanation\": \"With high verbal self-efficacy and an Artistic lean, you can blend creativity with structure, ensuring stories are both compelling and consistent across platforms.\"\n  },\n  {\n    \"careerName\": \"Marketing Analyst\",\n    \"careerDescription\": \"Marketing Analysts turn campaign and customer data into actionable insights, optimizing spend and messaging to grow revenue and market share.\",\n    \"matchExplanation\": \"Your Enterprising interest plus confidence in problem-solving suggest you enjoy experimenting and measuring results, perfect for iterating fast in digital campaigns.\"\n  },\n  {\n    \"careerName\": \"Product Manager\",\n    \"careerDescription\": \"Product Managers sit at the intersection of business, technology, and user experience, defining product vision, prioritizing features, and coordinating cross-functional teams to deliver value.\",\n    \"matchExplanation\": \"Moderate Extraversion and balanced RIASEC scores equip you to align engineering, design, and business stakeholders while keeping the end user front and center.\"\n  }"}}
+
+    at generateJSON (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__5938c8c6._.js:182:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async suggestCareers (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__5938c8c6._.js:349:29)
+    at async getCareerSuggestions (E:\edapt\dilsha\Geniuspathmatrix\.next\server\chunks\ssr\[root-of-the-server]__5938c8c6._.js:857:29)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:417:2449
+    at async handleAction (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:416:21371)
+    at async renderToHTMLOrFlightImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:422:27153)
+    at async doRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1655:34)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1920:28)
+    at async DevServer.renderPageComponent (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2408:24)
+    at async DevServer.renderToResponseImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:2445:32)
+    at async DevServer.pipeImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:1008:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\next-server.js:305:17)
+    at async DevServer.handleRequestImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\base-server.js:900:17)
+    at async E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:371:20
+    at async Span.traceAsyncFn (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\dev\next-dev-server.js:368:24)
+    at async invokeRender (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:237:21)
+    at async handleRequest (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:428:24)
+    at async requestHandlerImpl (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\router-server.js:452:13)
+    at async Server.requestListener (E:\edapt\dilsha\Geniuspathmatrix\node_modules\next\dist\server\lib\start-server.js:158:13)
+Prompt Preview: You are an expert career counselor AI named "Path-GeniX". Your role is to provide personalized, insi...
+
