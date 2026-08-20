@@ -1,4 +1,4 @@
-
+import { fetchAPI } from '@/lib/api-client';
 import {
   getUserRecord,
   recordParentQuizSent,
@@ -452,6 +452,99 @@ export async function getCareerSuggestions(input: SuggestCareersInput & { userId
     const userId = input.userId;
     if (!userId) throw new Error('User not authenticated.');
 
+    // 1. Submit assessment to FastAPI backend
+    try {
+      const backendAssessment = await fetchAPI<any>('/assessments', {
+        method: 'POST',
+        body: JSON.stringify({
+          general_info: {
+            name: input.generalInfo.name,
+            dob: input.generalInfo.dob,
+            gender: input.generalInfo.gender,
+            class_of_study: input.generalInfo.classOfStudy,
+            place: input.generalInfo.place,
+            school_or_college: input.generalInfo.schoolOrCollege,
+          },
+          personality: input.personality,
+          interest: input.interest,
+          cognitive_abilities: input.cognitiveAbilities,
+          self_reported_skills: input.selfReportedSkills || {},
+          cvq: input.cvq || {},
+        }),
+      });
+
+      // 2. Generate careers via FastAPI backend
+      const backendCareers = await fetchAPI<any>('/careers/generate', {
+        method: 'POST',
+      });
+
+      if (backendCareers.success && backendCareers.data) {
+        const suggestions: CareerSuggestion[] = backendCareers.data.suggestions.map((s: any) => ({
+          careerName: s.career_name,
+          careerDescription: s.career_description,
+          matchExplanation: s.match_explanation,
+          swotAnalysis: s.swot_analysis,
+        }));
+
+        const domains = backendCareers.data.domains.map((d: any) => ({
+          domainName: d.domain_name,
+          description: d.description,
+          score: d.score,
+          swotAnalysis: d.swot_analysis,
+          careerPaths: d.career_paths,
+        }));
+
+        const scoreRes = backendAssessment.data?.score_result;
+        const insightXReport = scoreRes
+          ? {
+              personalityProfile: {
+                openness: scoreRes.personality_profile.openness,
+                conscientiousness: scoreRes.personality_profile.conscientiousness,
+                extraversion: scoreRes.personality_profile.extraversion,
+                agreeableness: scoreRes.personality_profile.agreeableness,
+                neuroticism: scoreRes.personality_profile.neuroticism,
+              },
+              interestProfile: {
+                realistic: scoreRes.interest_profile.realistic,
+                investigative: scoreRes.interest_profile.investigative,
+                artistic: scoreRes.interest_profile.artistic,
+                social: scoreRes.interest_profile.social,
+                enterprising: scoreRes.interest_profile.enterprising,
+                conventional: scoreRes.interest_profile.conventional,
+              },
+              cognitiveProfile: {
+                logicalReasoning: scoreRes.cognitive_profile.logical_reasoning,
+                verbalAbility: scoreRes.cognitive_profile.verbal_ability,
+                problemSolving: scoreRes.cognitive_profile.problem_solving,
+                numericalAptitude: scoreRes.cognitive_profile.numerical_aptitude,
+              },
+              picIndex: scoreRes.pic_index,
+              generatedAt: scoreRes.generated_at,
+            }
+          : generateInsightXReport({
+              personality: input.personality,
+              interest: input.interest,
+              cognitiveAbilities: input.cognitiveAbilities,
+            });
+
+        upsertUserRecord(userId, (existing) => ({
+          ...existing,
+          assessment: {
+            ...input,
+            updatedAt: new Date().toISOString(),
+          },
+          careerDomains: domains,
+          careerSuggestions: suggestions,
+          insightXReport,
+        }));
+
+        return { success: true, data: suggestions, domains, insightXReport };
+      }
+    } catch (apiErr) {
+      console.warn('Backend assessment submission failed, falling back to local computation:', apiErr);
+    }
+
+    // Fallback to local computation
     const insightXReport = generateInsightXReport({
       personality: input.personality,
       interest: input.interest,
@@ -482,6 +575,28 @@ export async function getGeneratedGoals(input: GenerateGoalsInput & { userId: st
   try {
     if (!input.userId) throw new Error('User not authenticated.');
     if (!input.careerSelections?.length) throw new Error('Select at least one career.');
+
+    try {
+      const backendGoals = await fetchAPI<any>('/goals/generate', {
+        method: 'POST',
+        body: JSON.stringify({
+          career_selections: input.careerSelections,
+          student_profile: input.studentProfile || '',
+          timeframes: input.timeframes || ['1-year', '3-year', '5-year'],
+        }),
+      });
+
+      if (backendGoals.success && backendGoals.data?.plan) {
+        const goals: GoalPlan = backendGoals.data.plan;
+        upsertUserRecord(input.userId, (existing) => ({
+          ...existing,
+          goalPlan: goals,
+        }));
+        return { success: true, data: goals };
+      }
+    } catch (apiErr) {
+      console.warn('Backend goals generation failed, falling back to local calculation:', apiErr);
+    }
 
     const goals = generateGoalsFromCareers(input);
 
@@ -569,6 +684,45 @@ export async function generateAndSaveCareerReport(userId: string) {
   try {
     if (!userId) {
       return { success: false, error: 'User not authenticated.' };
+    }
+
+    try {
+      const backendReport = await fetchAPI<any>('/reports/generate', {
+        method: 'POST',
+      });
+
+      if (backendReport.success && backendReport.data?.payload) {
+        const p = backendReport.data.payload;
+        const report: LocalCareerReport = {
+          executiveSummary: p.executive_summary,
+          careerRecommendations: p.career_recommendations.map((r: any) => ({
+            careerName: r.career_name,
+            fitScore: r.fit_score,
+            rationale: r.rationale,
+            keyStrengths: r.key_strengths,
+            developmentAreas: r.development_areas,
+          })),
+          detailedSWOT: {
+            overallStrengths: p.detailed_swot.overall_strengths,
+            overallWeaknesses: p.detailed_swot.overall_weaknesses,
+            marketOpportunities: p.detailed_swot.market_opportunities,
+            potentialThreats: p.detailed_swot.potential_threats,
+          },
+          roadmap: p.roadmap,
+          nextSteps: p.next_steps,
+          generatedAt: timestampObject(),
+          status: 'ready',
+        };
+
+        upsertUserRecord(userId, (existing) => ({
+          ...existing,
+          careerReport: report,
+        }));
+
+        return { success: true, data: report };
+      }
+    } catch (apiErr) {
+      console.warn('Backend report generation failed, falling back to local build:', apiErr);
     }
 
     const userData = getUserRecord(userId);
