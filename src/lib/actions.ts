@@ -370,7 +370,7 @@ function parseSwotText(swotText: string) {
   return sections;
 }
 
-function buildCareerReport(userData: {
+export function buildCareerReport(userData: {
   careerSuggestions?: CareerSuggestion[];
   goalPlan?: GoalPlan;
   assessment?: Record<string, any>;
@@ -747,3 +747,135 @@ export async function generateAndSaveCareerReport(userId: string) {
     return { success: false, error: errorMessage };
   }
 }
+
+/**
+ * Download the InsightX PDF report by calling the backend /pathgenix-report endpoint.
+ * Reads assessment data from localStorage, sends it to the backend, and triggers
+ * a browser file download of the generated PDF.
+ */
+export async function downloadPdfReport(userId: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    if (!userId) {
+      return { success: false, error: 'User not authenticated.' };
+    }
+
+    const record = getUserRecord(userId);
+    if (!record) {
+      return { success: false, error: 'User data not found.' };
+    }
+
+    const assessment = record.assessment;
+    if (!assessment) {
+      return { success: false, error: 'Please complete the assessment first.' };
+    }
+
+    // Extract general info from assessment data
+    const generalInfo = assessment.generalInfo || {};
+    const studentName = generalInfo.name || record.username || 'Student';
+    const studentClass = generalInfo.classOfStudy || '12';
+    const schoolName = generalInfo.schoolOrCollege || '';
+
+    // Remap frontend keys (p1, i1, c1, s1, v1, ...) to backend keys (Q1, Q21, Q41, Q61, Q71, ...)
+    // The backend scoring functions expect a flat dict keyed as Q1–Q95.
+    const studentResponses: Record<string, any> = {};
+
+    function remapKeys(
+      section: Record<string, any> | undefined,
+      prefix: string,
+      qOffset: number,
+    ) {
+      if (!section) return;
+      for (const [key, value] of Object.entries(section)) {
+        // Extract numeric part from key (e.g. "p1" → 1, "i12" → 12)
+        const match = key.match(new RegExp(`^${prefix}(\\d+)$`));
+        if (match) {
+          const num = parseInt(match[1], 10);
+          const qKey = `Q${qOffset + num}`;
+          // Convert string-numeric values to numbers (backend expects int 1-5)
+          studentResponses[qKey] = typeof value === 'string' && !isNaN(Number(value))
+            ? Number(value)
+            : value;
+        }
+      }
+    }
+
+    // Personality: p1–p20 → Q1–Q20
+    remapKeys(assessment.personality, 'p', 0);
+    // Interest: i1–i20 → Q21–Q40
+    remapKeys(assessment.interest, 'i', 20);
+    // Cognitive: c1–c20 → Q41–Q60
+    remapKeys(assessment.cognitiveAbilities, 'c', 40);
+    // Skills: s1–s20 → Q61–Q80
+    remapKeys(assessment.selfReportedSkills, 's', 60);
+
+    // CVQ needs special mapping since the frontend groups don't match backend Q-numbers.
+    // Frontend v1-v2 = Cultural (backend Q91-Q92), v3-v4 = Language (Q76-Q77),
+    // v5-v6 = Digital (Q81-Q82), v7-v10 = Financial (Q86-Q89)
+    const cvqMapping: Record<string, string> = {
+      v1: 'Q91', v2: 'Q92',
+      v3: 'Q76', v4: 'Q77',
+      v5: 'Q81', v6: 'Q82',
+      v7: 'Q86', v8: 'Q87', v9: 'Q88', v10: 'Q89',
+    };
+    if (assessment.cvq) {
+      for (const [key, value] of Object.entries(assessment.cvq as Record<string, any>)) {
+        const qKey = cvqMapping[key];
+        if (qKey) {
+          studentResponses[qKey] = typeof value === 'string' && !isNaN(Number(value))
+            ? Number(value)
+            : value;
+        }
+      }
+    }
+
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+
+    const response = await fetch(`${API_BASE_URL}/pathgenix-report`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        studentName,
+        studentClass,
+        schoolName,
+        studentResponses,
+        coginitiveAnswerkey: assessment.cognitiveAnswerkey || null,
+      }),
+    });
+
+    if (!response.ok) {
+      const errBody = await response.json().catch(() => null);
+      const errMsg = errBody?.detail || `Server error (${response.status})`;
+      return { success: false, error: errMsg };
+    }
+
+    // Receive PDF blob and trigger download
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${studentName}_InsightXReport.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+    return { success: true };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to download PDF report.';
+    return { success: false, error: errorMessage };
+  }
+}
+
+/**
+ * Fetch dynamic assessment questions filtered by student grade from the FastAPI backend.
+ */
+export async function fetchAssessmentQuestions(grade: number = 10) {
+  try {
+    const res = await fetchAPI<any>(`/assessments/questions?grade=${grade}`);
+    return res;
+  } catch (error) {
+    console.warn('Failed to fetch dynamic questions from backend:', error);
+    return { success: false, error: 'Could not fetch questions from server' };
+  }
+}
+
