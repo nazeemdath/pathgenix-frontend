@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -16,7 +15,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { LoadingSpinner } from '@/components/loading-spinner';
-import { GraduationCap } from 'lucide-react';
+import { GraduationCap, Eye, EyeOff } from 'lucide-react';
 
 interface AuthDialogProps {
   mode: 'login' | 'signup' | null;
@@ -27,7 +26,10 @@ export function AuthDialog({ mode, onModeChange }: AuthDialogProps) {
   const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
   const [phone, setPhone] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const router = useRouter();
   const { login, signup } = useAuth();
@@ -39,7 +41,10 @@ export function AuthDialog({ mode, onModeChange }: AuthDialogProps) {
       setUsername('');
       setEmail('');
       setPassword('');
+      setConfirmPassword('');
       setPhone('');
+      setShowPassword(false);
+      setShowConfirmPassword(false);
       setIsLoading(false);
     }
   };
@@ -52,33 +57,46 @@ export function AuthDialog({ mode, onModeChange }: AuthDialogProps) {
     e.preventDefault();
     setIsLoading(true);
 
+    if (mode === 'signup') {
+      if (password !== confirmPassword) {
+        toast({
+          variant: 'destructive',
+          title: 'Sign Up Failed',
+          description: 'Passwords do not match. Please verify your password confirmation.',
+        });
+        setIsLoading(false);
+        return;
+      }
+    }
+
     try {
       if (mode === 'login') {
         await handleLogin();
       } else {
-        // Signup with email/password, and pass extra details
-        // If email is not provided, we generate a dummy one for Firebase Auth
         const authEmail = email || `${username.toLowerCase()}@path-genix.user`;
-        await signup(authEmail, password, { username, phone, email });
+        await signup(authEmail, password, {
+          username,
+          phone,
+          email,
+          confirmPassword,
+        });
       }
       router.push('/auth/callback');
       handleOpenChange(false);
     } catch (error: any) {
       let description = 'An unexpected error occurred. Please try again.';
       if (error.code === 'auth/invalid-credential' && mode === 'login') {
-          description = 'Login failed. Please check your credentials and try again.';
+        description = 'Login failed. Please check your credentials and try again.';
       } else if (error.code === 'auth/email-already-in-use') {
-          description = error.message || 'This account already exists. Please try logging in.';
+        description = error.message || 'This account already exists. Please try logging in.';
       } else if (error.code === 'auth/invalid-email') {
-          description = 'The generated email for your username is invalid. Please try a different username.'
+        description = 'The generated email for your username is invalid. Please try a different username.';
       } else if (error.code === 'auth/weak-password' || error.code?.includes('WEAK_PASSWORD')) {
-          description = 'Password must be at least 6 characters long.';
-      } else if (error.code === 'auth/configuration-not-found') {
-          description = 'Authentication is not properly configured. Please contact support.';
+        description = 'Password must be at least 8 characters and include uppercase, lowercase, digit, and special character.';
       } else if (error.message) {
         description = error.message;
       }
-        
+
       toast({
         variant: 'destructive',
         title: `${mode === 'login' ? 'Login' : 'Sign Up'} Failed`,
@@ -145,15 +163,57 @@ export function AuthDialog({ mode, onModeChange }: AuthDialogProps) {
           )}
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              required
-              minLength={6}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                minLength={8}
+                placeholder="••••••••"
+                className="pr-10"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+            {mode === 'signup' && (
+              <p className="text-[11px] text-muted-foreground">
+                Must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number, and 1 special char.
+              </p>
+            )}
           </div>
+          {mode === 'signup' && (
+            <div className="grid gap-2">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  required
+                  minLength={8}
+                  placeholder="••••••••"
+                  className="pr-10"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
+                  aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+                >
+                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+          )}
           <Button type="submit" className="w-full mt-2" disabled={isLoading}>
             {isLoading ? <LoadingSpinner /> : (mode === 'login' ? 'Login' : 'Create Account')}
           </Button>

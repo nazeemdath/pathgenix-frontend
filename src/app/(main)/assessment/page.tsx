@@ -11,7 +11,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { LoadingSpinner } from '@/components/loading-spinner';
-import { getCareerSuggestions, sendParentQuiz } from '@/lib/actions';
+import { getCareerSuggestions, sendParentQuiz, fetchAssessmentQuestions, getUserData } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 import { AlertCircle, ArrowLeft, ArrowRight, Calendar as CalendarIcon, Clock, Mail } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -34,7 +34,7 @@ const assessmentSections = [
 
 const totalTime = assessmentSections.reduce((acc, section) => acc + section.time, 0);
 
-const assessmentQuestions = {
+const defaultAssessmentQuestions = {
   personality: [
     { id: 'p1', question: 'I enjoy being the center of attention in a group.' },
     { id: 'p2', question: 'I make sure my school assignments are neat and organized.' },
@@ -248,10 +248,49 @@ export default function AssessmentPage() {
   const [isTestActive, setIsTestActive] = React.useState(false);
   const [sectionTimeLeft, setSectionTimeLeft] = React.useState(0);
   const [isTimeUp, setIsTimeUp] = React.useState(false);
+  const [dynamicQuestions, setDynamicQuestions] = React.useState<any>(null);
+  const [isLoadingQuestions, setIsLoadingQuestions] = React.useState(false);
 
   const { toast } = useToast();
 
   const submittedRef = React.useRef(false);
+
+  const assessmentQuestions: {
+    personality: Array<{ id: string; question: string; options?: string[] }>;
+    interest: Array<{ id: string; question: string; options?: string[] }>;
+    cognitive: Array<{ id: string; question: string; options?: string[] }>;
+    skillMapping: Array<{ id: string; question: string; options?: string[] }>;
+    cvq: Array<{ id: string; question: string; section?: string; options?: string[] }>;
+  } = React.useMemo(() => {
+    if (!dynamicQuestions) return defaultAssessmentQuestions;
+
+    return {
+      personality: (dynamicQuestions.personality || []).map((q: any) => ({
+        id: q.code,
+        question: q.question_text,
+      })),
+      interest: (dynamicQuestions.interest || []).map((q: any) => ({
+        id: q.code,
+        question: q.question_text,
+      })),
+      cognitive: (dynamicQuestions.cognitive || []).map((q: any) => ({
+        id: q.code,
+        question: q.question_text,
+        options: q.options && q.options.length > 0 ? q.options : undefined,
+      })),
+      skillMapping: (dynamicQuestions.skills || []).map((q: any) => ({
+        id: q.code,
+        question: q.question_text,
+      })),
+      cvq: (dynamicQuestions.cvq || []).map((q: any) => ({
+        id: q.code,
+        section: q.dimension
+          ? q.dimension.charAt(0).toUpperCase() + q.dimension.slice(1).replace(/_/g, ' ')
+          : 'General',
+        question: q.question_text,
+      })),
+    };
+  }, [dynamicQuestions]);
 
   React.useEffect(() => {
     if (!authLoading && !user) {
@@ -263,6 +302,43 @@ export default function AssessmentPage() {
       });
     }
   }, [user, authLoading, router, toast]);
+
+  // Automatically prefill student details (Full Name, Grade, School) from User Account
+  React.useEffect(() => {
+    if (user) {
+      const candidateName = user.displayName || (user as any).username || '';
+      if (candidateName && !name) {
+        setName(candidateName);
+      }
+
+      async function loadSavedProfile() {
+        try {
+          const res = await getUserData(user!.uid);
+          if (res.success && res.data) {
+            const uData = res.data;
+            const fetchedName =
+              uData.assessment?.generalInfo?.name ||
+              uData.username ||
+              user?.displayName ||
+              '';
+            if (fetchedName && !name) {
+              setName(fetchedName);
+            }
+            if (uData.assessment?.generalInfo) {
+              const gi = uData.assessment.generalInfo;
+              if (gi.classOfStudy && !classOfStudy) setClassOfStudy(gi.classOfStudy);
+              if (gi.gender && !gender) setGender(gi.gender);
+              if (gi.place && !place) setPlace(gi.place);
+              if (gi.schoolOrCollege && !schoolOrCollege) setSchoolOrCollege(gi.schoolOrCollege);
+            }
+          }
+        } catch (e) {
+          // ignore non-blocking
+        }
+      }
+      loadSavedProfile();
+    }
+  }, [user]);
 
   React.useEffect(() => {
     if (isTestActive && currentStep > 1) {
@@ -286,6 +362,29 @@ export default function AssessmentPage() {
     setCurrentStep(prev => Math.min(prev + 1, totalSteps));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [sectionTimeLeft, isTestActive, currentStep]);
+
+  const handleProceedToQuestions = async () => {
+    const gradeMatch = classOfStudy.match(/\d+/);
+    const gradeNum = gradeMatch ? parseInt(gradeMatch[0], 10) : 10;
+
+    setIsLoadingQuestions(true);
+    try {
+      const res = await fetchAssessmentQuestions(gradeNum);
+      if (res && res.success && 'data' in res && res.data?.sections) {
+        setDynamicQuestions(res.data.sections);
+        toast({
+          title: `Grade ${gradeNum} Assessment Configured`,
+          description: `Loaded dynamic question bank tailored for Grade ${gradeNum}.`,
+        });
+      }
+    } catch (e) {
+      console.warn('Could not load dynamic questions, using default question bank:', e);
+    } finally {
+      setIsLoadingQuestions(false);
+    }
+
+    handleNext();
+  };
 
   const handleTimeUpAndProceed = () => {
     setIsTimeUp(false);
@@ -517,8 +616,21 @@ export default function AssessmentPage() {
             )}
           </CardContent>
           <CardFooter>
-            <Button onClick={handleNext} size="lg" className="w-full" disabled={!dob || !gender || !name}>
-              Start Assessment <ArrowRight className="ml-2 h-4 w-4" />
+            <Button
+              onClick={handleProceedToQuestions}
+              size="lg"
+              className="w-full"
+              disabled={!dob || !gender || !name || isLoadingQuestions}
+            >
+              {isLoadingQuestions ? (
+                <>
+                  <LoadingSpinner className="mr-2 h-4 w-4 animate-spin" /> Loading Questions for Grade...
+                </>
+              ) : (
+                <>
+                  Start Assessment <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
             </Button>
           </CardFooter>
         </Card>

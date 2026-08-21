@@ -1,4 +1,4 @@
-
+import { fetchAPI } from '@/lib/api-client';
 import {
   getUserRecord,
   recordParentQuizSent,
@@ -370,7 +370,7 @@ function parseSwotText(swotText: string) {
   return sections;
 }
 
-function buildCareerReport(userData: {
+export function buildCareerReport(userData: {
   careerSuggestions?: CareerSuggestion[];
   goalPlan?: GoalPlan;
   assessment?: Record<string, any>;
@@ -452,6 +452,99 @@ export async function getCareerSuggestions(input: SuggestCareersInput & { userId
     const userId = input.userId;
     if (!userId) throw new Error('User not authenticated.');
 
+    // 1. Submit assessment to FastAPI backend
+    try {
+      const backendAssessment = await fetchAPI<any>('/assessments', {
+        method: 'POST',
+        body: JSON.stringify({
+          general_info: {
+            name: input.generalInfo.name,
+            dob: input.generalInfo.dob,
+            gender: input.generalInfo.gender,
+            class_of_study: input.generalInfo.classOfStudy,
+            place: input.generalInfo.place,
+            school_or_college: input.generalInfo.schoolOrCollege,
+          },
+          personality: input.personality,
+          interest: input.interest,
+          cognitive_abilities: input.cognitiveAbilities,
+          self_reported_skills: input.selfReportedSkills || {},
+          cvq: input.cvq || {},
+        }),
+      });
+
+      // 2. Generate careers via FastAPI backend
+      const backendCareers = await fetchAPI<any>('/careers/generate', {
+        method: 'POST',
+      });
+
+      if (backendCareers.success && backendCareers.data) {
+        const suggestions: CareerSuggestion[] = backendCareers.data.suggestions.map((s: any) => ({
+          careerName: s.career_name,
+          careerDescription: s.career_description,
+          matchExplanation: s.match_explanation,
+          swotAnalysis: s.swot_analysis,
+        }));
+
+        const domains = backendCareers.data.domains.map((d: any) => ({
+          domainName: d.domain_name,
+          description: d.description,
+          score: d.score,
+          swotAnalysis: d.swot_analysis,
+          careerPaths: d.career_paths,
+        }));
+
+        const scoreRes = backendAssessment.data?.score_result;
+        const insightXReport = scoreRes
+          ? {
+              personalityProfile: {
+                openness: scoreRes.personality_profile.openness,
+                conscientiousness: scoreRes.personality_profile.conscientiousness,
+                extraversion: scoreRes.personality_profile.extraversion,
+                agreeableness: scoreRes.personality_profile.agreeableness,
+                neuroticism: scoreRes.personality_profile.neuroticism,
+              },
+              interestProfile: {
+                realistic: scoreRes.interest_profile.realistic,
+                investigative: scoreRes.interest_profile.investigative,
+                artistic: scoreRes.interest_profile.artistic,
+                social: scoreRes.interest_profile.social,
+                enterprising: scoreRes.interest_profile.enterprising,
+                conventional: scoreRes.interest_profile.conventional,
+              },
+              cognitiveProfile: {
+                logicalReasoning: scoreRes.cognitive_profile.logical_reasoning,
+                verbalAbility: scoreRes.cognitive_profile.verbal_ability,
+                problemSolving: scoreRes.cognitive_profile.problem_solving,
+                numericalAptitude: scoreRes.cognitive_profile.numerical_aptitude,
+              },
+              picIndex: scoreRes.pic_index,
+              generatedAt: scoreRes.generated_at,
+            }
+          : generateInsightXReport({
+              personality: input.personality,
+              interest: input.interest,
+              cognitiveAbilities: input.cognitiveAbilities,
+            });
+
+        upsertUserRecord(userId, (existing) => ({
+          ...existing,
+          assessment: {
+            ...input,
+            updatedAt: new Date().toISOString(),
+          },
+          careerDomains: domains,
+          careerSuggestions: suggestions,
+          insightXReport,
+        }));
+
+        return { success: true, data: suggestions, domains, insightXReport };
+      }
+    } catch (apiErr) {
+      console.warn('Backend assessment submission failed, falling back to local computation:', apiErr);
+    }
+
+    // Fallback to local computation
     const insightXReport = generateInsightXReport({
       personality: input.personality,
       interest: input.interest,
@@ -482,6 +575,28 @@ export async function getGeneratedGoals(input: GenerateGoalsInput & { userId: st
   try {
     if (!input.userId) throw new Error('User not authenticated.');
     if (!input.careerSelections?.length) throw new Error('Select at least one career.');
+
+    try {
+      const backendGoals = await fetchAPI<any>('/goals/generate', {
+        method: 'POST',
+        body: JSON.stringify({
+          career_selections: input.careerSelections,
+          student_profile: input.studentProfile || '',
+          timeframes: input.timeframes || ['1-year', '3-year', '5-year'],
+        }),
+      });
+
+      if (backendGoals.success && backendGoals.data?.plan) {
+        const goals: GoalPlan = backendGoals.data.plan;
+        upsertUserRecord(input.userId, (existing) => ({
+          ...existing,
+          goalPlan: goals,
+        }));
+        return { success: true, data: goals };
+      }
+    } catch (apiErr) {
+      console.warn('Backend goals generation failed, falling back to local calculation:', apiErr);
+    }
 
     const goals = generateGoalsFromCareers(input);
 
@@ -571,6 +686,45 @@ export async function generateAndSaveCareerReport(userId: string) {
       return { success: false, error: 'User not authenticated.' };
     }
 
+    try {
+      const backendReport = await fetchAPI<any>('/reports/generate', {
+        method: 'POST',
+      });
+
+      if (backendReport.success && backendReport.data?.payload) {
+        const p = backendReport.data.payload;
+        const report: LocalCareerReport = {
+          executiveSummary: p.executive_summary,
+          careerRecommendations: p.career_recommendations.map((r: any) => ({
+            careerName: r.career_name,
+            fitScore: r.fit_score,
+            rationale: r.rationale,
+            keyStrengths: r.key_strengths,
+            developmentAreas: r.development_areas,
+          })),
+          detailedSWOT: {
+            overallStrengths: p.detailed_swot.overall_strengths,
+            overallWeaknesses: p.detailed_swot.overall_weaknesses,
+            marketOpportunities: p.detailed_swot.market_opportunities,
+            potentialThreats: p.detailed_swot.potential_threats,
+          },
+          roadmap: p.roadmap,
+          nextSteps: p.next_steps,
+          generatedAt: timestampObject(),
+          status: 'ready',
+        };
+
+        upsertUserRecord(userId, (existing) => ({
+          ...existing,
+          careerReport: report,
+        }));
+
+        return { success: true, data: report };
+      }
+    } catch (apiErr) {
+      console.warn('Backend report generation failed, falling back to local build:', apiErr);
+    }
+
     const userData = getUserRecord(userId);
     if (!userData) {
       return { success: false, error: 'User data not found.' };
@@ -593,3 +747,135 @@ export async function generateAndSaveCareerReport(userId: string) {
     return { success: false, error: errorMessage };
   }
 }
+
+/**
+ * Download the InsightX PDF report by calling the backend /pathgenix-report endpoint.
+ * Reads assessment data from localStorage, sends it to the backend, and triggers
+ * a browser file download of the generated PDF.
+ */
+export async function downloadPdfReport(userId: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    if (!userId) {
+      return { success: false, error: 'User not authenticated.' };
+    }
+
+    const record = getUserRecord(userId);
+    if (!record) {
+      return { success: false, error: 'User data not found.' };
+    }
+
+    const assessment = record.assessment;
+    if (!assessment) {
+      return { success: false, error: 'Please complete the assessment first.' };
+    }
+
+    // Extract general info from assessment data
+    const generalInfo = assessment.generalInfo || {};
+    const studentName = generalInfo.name || record.username || 'Student';
+    const studentClass = generalInfo.classOfStudy || '12';
+    const schoolName = generalInfo.schoolOrCollege || '';
+
+    // Remap frontend keys (p1, i1, c1, s1, v1, ...) to backend keys (Q1, Q21, Q41, Q61, Q71, ...)
+    // The backend scoring functions expect a flat dict keyed as Q1–Q95.
+    const studentResponses: Record<string, any> = {};
+
+    function remapKeys(
+      section: Record<string, any> | undefined,
+      prefix: string,
+      qOffset: number,
+    ) {
+      if (!section) return;
+      for (const [key, value] of Object.entries(section)) {
+        // Extract numeric part from key (e.g. "p1" → 1, "i12" → 12)
+        const match = key.match(new RegExp(`^${prefix}(\\d+)$`));
+        if (match) {
+          const num = parseInt(match[1], 10);
+          const qKey = `Q${qOffset + num}`;
+          // Convert string-numeric values to numbers (backend expects int 1-5)
+          studentResponses[qKey] = typeof value === 'string' && !isNaN(Number(value))
+            ? Number(value)
+            : value;
+        }
+      }
+    }
+
+    // Personality: p1–p20 → Q1–Q20
+    remapKeys(assessment.personality, 'p', 0);
+    // Interest: i1–i20 → Q21–Q40
+    remapKeys(assessment.interest, 'i', 20);
+    // Cognitive: c1–c20 → Q41–Q60
+    remapKeys(assessment.cognitiveAbilities, 'c', 40);
+    // Skills: s1–s20 → Q61–Q80
+    remapKeys(assessment.selfReportedSkills, 's', 60);
+
+    // CVQ needs special mapping since the frontend groups don't match backend Q-numbers.
+    // Frontend v1-v2 = Cultural (backend Q91-Q92), v3-v4 = Language (Q76-Q77),
+    // v5-v6 = Digital (Q81-Q82), v7-v10 = Financial (Q86-Q89)
+    const cvqMapping: Record<string, string> = {
+      v1: 'Q91', v2: 'Q92',
+      v3: 'Q76', v4: 'Q77',
+      v5: 'Q81', v6: 'Q82',
+      v7: 'Q86', v8: 'Q87', v9: 'Q88', v10: 'Q89',
+    };
+    if (assessment.cvq) {
+      for (const [key, value] of Object.entries(assessment.cvq as Record<string, any>)) {
+        const qKey = cvqMapping[key];
+        if (qKey) {
+          studentResponses[qKey] = typeof value === 'string' && !isNaN(Number(value))
+            ? Number(value)
+            : value;
+        }
+      }
+    }
+
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+
+    const response = await fetch(`${API_BASE_URL}/pathgenix-report`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        studentName,
+        studentClass,
+        schoolName,
+        studentResponses,
+        coginitiveAnswerkey: assessment.cognitiveAnswerkey || null,
+      }),
+    });
+
+    if (!response.ok) {
+      const errBody = await response.json().catch(() => null);
+      const errMsg = errBody?.detail || `Server error (${response.status})`;
+      return { success: false, error: errMsg };
+    }
+
+    // Receive PDF blob and trigger download
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${studentName}_InsightXReport.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+    return { success: true };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to download PDF report.';
+    return { success: false, error: errorMessage };
+  }
+}
+
+/**
+ * Fetch dynamic assessment questions filtered by student grade from the FastAPI backend.
+ */
+export async function fetchAssessmentQuestions(grade: number = 10) {
+  try {
+    const res = await fetchAPI<any>(`/assessments/questions?grade=${grade}`);
+    return res;
+  } catch (error) {
+    console.warn('Failed to fetch dynamic questions from backend:', error);
+    return { success: false, error: 'Could not fetch questions from server' };
+  }
+}
+
