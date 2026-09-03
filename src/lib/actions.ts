@@ -828,6 +828,18 @@ export async function downloadPdfReport(userId: string): Promise<{ success: bool
       }
     }
 
+    // Ensure standard Likert questions Q1–Q40 (Personality + Interest) and Q61–Q70 (Skills) have at least a neutral default (3)
+    for (let i = 1; i <= 40; i++) {
+      if (studentResponses[`Q${i}`] === undefined || studentResponses[`Q${i}`] === null) {
+        studentResponses[`Q${i}`] = 3;
+      }
+    }
+    for (let i = 61; i <= 70; i++) {
+      if (studentResponses[`Q${i}`] === undefined || studentResponses[`Q${i}`] === null) {
+        studentResponses[`Q${i}`] = 3;
+      }
+    }
+
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
     const response = await fetch(`${API_BASE_URL}/pathgenix-report`, {
