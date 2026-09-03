@@ -2,6 +2,7 @@
 'use client';
 
 import * as React from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/layout/app-header';
 import { Button } from '@/components/ui/button';
@@ -13,12 +14,13 @@ import { Input } from '@/components/ui/input';
 import { LoadingSpinner } from '@/components/loading-spinner';
 import { getCareerSuggestions, sendParentQuiz, fetchAssessmentQuestions, getUserData } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
-import { AlertCircle, ArrowLeft, ArrowRight, Calendar as CalendarIcon, Clock, Mail } from 'lucide-react';
+import { AlertCircle, ArrowLeft, ArrowRight, Calendar as CalendarIcon, Clock, Mail, Sparkles, RefreshCw, Edit3, CheckCircle2, UserCheck } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
+import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { format, differenceInYears } from 'date-fns';
+import { format, differenceInYears, parseISO, isValid } from 'date-fns';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/contexts/auth-context';
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
@@ -245,6 +247,10 @@ export default function AssessmentPage() {
   const [parentEmail, setParentEmail] = React.useState('');
   const [parentPhone, setParentPhone] = React.useState('');
 
+  const [hasExistingAssessment, setHasExistingAssessment] = React.useState(false);
+  const [existingAssessmentDate, setExistingAssessmentDate] = React.useState<string | null>(null);
+  const [isEditingInfo, setIsEditingInfo] = React.useState(false);
+
   const [isTestActive, setIsTestActive] = React.useState(false);
   const [sectionTimeLeft, setSectionTimeLeft] = React.useState(0);
   const [isTimeUp, setIsTimeUp] = React.useState(false);
@@ -316,6 +322,16 @@ export default function AssessmentPage() {
           const res = await getUserData(user!.uid);
           if (res.success && res.data) {
             const uData = res.data;
+
+            // Check if student has already completed an assessment
+            if (uData.assessment || uData.insightXReport) {
+              setHasExistingAssessment(true);
+              const prevDate = uData.assessment?.updatedAt || uData.insightXReport?.generatedAt || null;
+              if (prevDate) {
+                setExistingAssessmentDate(prevDate);
+              }
+            }
+
             const fetchedName =
               uData.assessment?.generalInfo?.name ||
               uData.username ||
@@ -326,6 +342,16 @@ export default function AssessmentPage() {
             }
             if (uData.assessment?.generalInfo) {
               const gi = uData.assessment.generalInfo;
+              if (gi.dob && !dob) {
+                try {
+                  const parsed = typeof gi.dob === 'string' ? parseISO(gi.dob) : new Date(gi.dob);
+                  if (isValid(parsed)) {
+                    setDob(parsed);
+                  }
+                } catch (dobErr) {
+                  console.warn('Could not parse stored date of birth:', dobErr);
+                }
+              }
               if (gi.classOfStudy && !classOfStudy) setClassOfStudy(gi.classOfStudy);
               if (gi.gender && !gender) setGender(gi.gender);
               if (gi.place && !place) setPlace(gi.place);
@@ -516,11 +542,117 @@ export default function AssessmentPage() {
     if (currentStep === 1) { // General Information Step
       const isUnder18 = dob ? differenceInYears(new Date(), dob) < 18 : false;
 
+      // For returning students who haven't clicked "Edit", show a clean verified summary
+      if (hasExistingAssessment && !isEditingInfo) {
+        return (
+          <Card className="border-primary/20 shadow-sm">
+            <CardHeader className="flex flex-row items-start justify-between pb-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 gap-1 py-0.5">
+                    <UserCheck className="h-3.5 w-3.5" /> Verified Profile
+                  </Badge>
+                  {existingAssessmentDate && (
+                    <span className="text-xs text-muted-foreground">
+                      Last completed: {format(new Date(existingAssessmentDate), 'MMM d, yyyy')}
+                    </span>
+                  )}
+                </div>
+                <CardTitle className="font-headline text-2xl pt-1">Student Profile Details</CardTitle>
+                <CardDescription>
+                  Your information is pre-filled from your previous assessment. You can review it below or edit if anything has changed.
+                </CardDescription>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsEditingInfo(true)}
+                className="gap-1.5 text-xs font-semibold shrink-0"
+              >
+                <Edit3 className="h-3.5 w-3.5" /> Edit Details
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-5 rounded-xl bg-muted/40 border border-border/60">
+                <div className="space-y-1">
+                  <span className="text-xs font-medium text-muted-foreground">Full Name</span>
+                  <p className="text-sm font-semibold text-foreground">{name || '—'}</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-medium text-muted-foreground">Date of Birth</span>
+                  <p className="text-sm font-semibold text-foreground">{dob ? format(dob, 'PPP') : '—'}</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-medium text-muted-foreground">Gender</span>
+                  <p className="text-sm font-semibold text-foreground capitalize">{gender || '—'}</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-medium text-muted-foreground">Class of Study</span>
+                  <p className="text-sm font-semibold text-foreground">{classOfStudy || '—'}</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-medium text-muted-foreground">Place / City</span>
+                  <p className="text-sm font-semibold text-foreground">{place || '—'}</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-medium text-muted-foreground">School / College</span>
+                  <p className="text-sm font-semibold text-foreground">{schoolOrCollege || '—'}</p>
+                </div>
+              </div>
+
+              {isUnder18 && (
+                <div className="text-xs text-muted-foreground flex items-center gap-2 bg-primary/5 p-3 rounded-lg border border-primary/10">
+                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                  <span>Student age eligibility verified (under 18). Your answers will be calibrated for your grade level.</span>
+                </div>
+              )}
+            </CardContent>
+            <CardFooter className="flex flex-col sm:flex-row gap-3 pt-2">
+              <Button
+                variant="outline"
+                onClick={() => setIsEditingInfo(true)}
+                className="w-full sm:w-auto"
+              >
+                <Edit3 className="mr-2 h-4 w-4" /> Edit Details
+              </Button>
+              <Button
+                onClick={handleProceedToQuestions}
+                size="lg"
+                className="w-full sm:flex-1 font-semibold"
+                disabled={!dob || !gender || !name || isLoadingQuestions}
+              >
+                {isLoadingQuestions ? (
+                  <>
+                    <LoadingSpinner className="mr-2 h-4 w-4 animate-spin" /> Loading Questions for Grade...
+                  </>
+                ) : (
+                  <>
+                    Start Assessment Questions <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        );
+      }
+
       return (
         <Card>
-          <CardHeader>
-            <CardTitle className="font-headline text-2xl">General Information</CardTitle>
-            <CardDescription>Please provide some basic information about yourself.</CardDescription>
+          <CardHeader className="flex flex-row items-start justify-between pb-4">
+            <div>
+              <CardTitle className="font-headline text-2xl">General Information</CardTitle>
+              <CardDescription>Please provide some basic information about yourself.</CardDescription>
+            </div>
+            {hasExistingAssessment && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsEditingInfo(false)}
+                className="text-xs font-medium"
+              >
+                Done Editing
+              </Button>
+            )}
           </CardHeader>
           <CardContent className="space-y-8">
             <div className="space-y-2">
@@ -615,11 +747,20 @@ export default function AssessmentPage() {
               </Card>
             )}
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col sm:flex-row gap-3">
+            {hasExistingAssessment && (
+              <Button
+                variant="outline"
+                onClick={() => setIsEditingInfo(false)}
+                className="w-full sm:w-auto"
+              >
+                Back to Summary
+              </Button>
+            )}
             <Button
               onClick={handleProceedToQuestions}
               size="lg"
-              className="w-full"
+              className="w-full sm:flex-1 font-semibold"
               disabled={!dob || !gender || !name || isLoadingQuestions}
             >
               {isLoadingQuestions ? (
@@ -758,11 +899,53 @@ export default function AssessmentPage() {
     const totalQuestions = assessmentSections.reduce((total, section) => total + section.questions, 0);
 
     return (
-      <Card>
+      <Card className="border-border shadow-sm">
         <CardHeader>
-          <CardTitle className="font-headline text-2xl">Welcome to the InsightX Assessment</CardTitle>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <CardTitle className="font-headline text-2xl">
+                {hasExistingAssessment ? 'InsightX Assessment — Retake Mode' : 'Welcome to the InsightX Assessment'}
+              </CardTitle>
+              {hasExistingAssessment && (
+                <CardDescription className="mt-1">
+                  You have previously completed an assessment. You may view your existing report or retake the test.
+                </CardDescription>
+              )}
+            </div>
+            {hasExistingAssessment && (
+              <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 gap-1.5 py-1 px-3 shrink-0 self-start sm:self-auto font-semibold">
+                <Sparkles className="h-3.5 w-3.5" /> Previous Results Available
+              </Badge>
+            )}
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
+          {hasExistingAssessment && (
+            <div className="rounded-xl border border-primary/20 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-foreground">You have already completed this assessment</span>
+                  {existingAssessmentDate && (
+                    <span className="text-xs text-muted-foreground">
+                      ({format(new Date(existingAssessmentDate), 'PPP')})
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Your previous career matches, SWOT analysis, and psychometrics are active on PathXplore. Retaking will overwrite these scores with your newest answers.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto shrink-0">
+                <Button variant="outline" size="sm" asChild className="font-semibold">
+                  <Link href="/pathxplore">View My Results</Link>
+                </Button>
+                <Button size="sm" onClick={handleStartAssessment} className="font-semibold shadow-xs">
+                  <RefreshCw className="mr-1.5 h-3.5 w-3.5" /> Retake Test
+                </Button>
+              </div>
+            </div>
+          )}
+
           <div>
             <h3 className="font-semibold mb-2">General Instructions:</h3>
             <ul className="list-disc list-inside text-sm text-muted-foreground space-y-2">
@@ -797,8 +980,21 @@ export default function AssessmentPage() {
             </AlertDescription>
           </Alert>
         </CardContent>
-        <CardFooter>
-          <Button onClick={handleStartAssessment} className="w-full" size="lg">Proceed to Information Form</Button>
+        <CardFooter className="flex flex-col sm:flex-row gap-3">
+          {hasExistingAssessment ? (
+            <>
+              <Button variant="outline" asChild size="lg" className="w-full sm:w-1/2 font-semibold">
+                <Link href="/pathxplore">
+                  View Previous Results
+                </Link>
+              </Button>
+              <Button onClick={handleStartAssessment} className="w-full sm:w-1/2 font-semibold" size="lg">
+                <RefreshCw className="mr-2 h-4 w-4" /> Retake Assessment
+              </Button>
+            </>
+          ) : (
+            <Button onClick={handleStartAssessment} className="w-full" size="lg">Proceed to Information Form</Button>
+          )}
         </CardFooter>
       </Card>
     );
