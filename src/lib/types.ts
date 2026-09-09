@@ -22,19 +22,55 @@ export type InterestProfile = {
     conventional: number;
 };
 
-export type CognitiveProfile = {
-    logicalReasoning: number;
-    verbalAbility: number;
-    problemSolving: number;
-    numericalAptitude: number;
+export type CognitiveProfile = Record<string, number>;
+
+export type PICCComponent = {
+    value: number;
+    weight: number;
 };
 
 export type InsightXReportData = {
     personalityProfile: PersonalityProfile;
     interestProfile: InterestProfile;
     cognitiveProfile: CognitiveProfile;
+    skillProfile: Record<string, number>;
+    cvqProfile: Record<string, number>;
+    piccComponents: Record<string, PICCComponent>;
     picIndex: number;
+    scoringVersion: string;
     generatedAt: string;
+};
+
+// PathXplore Career Intelligence types
+export type PathXploreClusterSubitem = {
+    name: string;
+    pct: number;
+};
+
+export type PathXploreCluster = {
+    name: string;
+    overall_pct: number;
+    alignment: string;
+    subitems: PathXploreClusterSubitem[];
+};
+
+export type PathXploreTopChoice = {
+    title: string;
+    cluster: string;
+};
+
+export type PathXploreSWOT = {
+    strengths: string[];
+    growth_areas: string[];
+    opportunities: string[];
+    risks: string[];
+};
+
+export type PathXploreData = {
+    swot: PathXploreSWOT;
+    domains: string[];
+    clusters: PathXploreCluster[];
+    top_choices: PathXploreTopChoice[];
 };
 
 export type ReportInfo = {
@@ -110,4 +146,3 @@ export interface WebhookResponseData {
     };
     careerSuggestions?: CareerSuggestion[];
 }
-

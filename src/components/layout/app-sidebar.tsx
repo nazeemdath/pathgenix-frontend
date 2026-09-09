@@ -35,12 +35,14 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="p-4">
-        <div className="flex items-center gap-2">
-          <GraduationCap className="h-7 w-7 text-primary" />
+      <SidebarHeader className="p-4 border-b border-sidebar-border">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-sm" style={{ backgroundColor: '#E9C46A' }}>
+            <GraduationCap className="h-5 w-5 text-[#241A3D]" />
+          </div>
           <div>
-            <span className="font-headline text-xl font-semibold text-foreground">Path-GeniX™</span>
-            <p className="text-xs text-muted-foreground">Genius Path Matrix</p>
+            <span className="font-headline text-lg font-bold text-sidebar-foreground tracking-tight">Path-GeniX™</span>
+            <p className="text-[11px] font-semibold text-[#E9C46A] tracking-wide">Genius Path Matrix</p>
           </div>
         </div>
       </SidebarHeader>
