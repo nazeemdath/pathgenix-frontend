@@ -6,15 +6,13 @@ import {
   upsertUserRecord,
   type LocalCareerReport,
 } from '@/lib/local-app-state';
-import { generateInsightXReport } from '@/lib/profile-calculator';
 import type {
   CareerSuggestion,
-  CognitiveProfile,
   Goal,
   GoalPlan,
-  InterestProfile,
+  InsightXReportData,
   MentorMessage,
-  PersonalityProfile,
+  PathXploreData,
 } from '@/lib/types';
 
 type GeneralInfo = {
@@ -45,118 +43,6 @@ type MentorInput = {
   studentProfile: string;
 };
 
-type CareerTemplate = {
-  careerName: string;
-  careerDescription: string;
-  interestWeights: Partial<Record<keyof InterestProfile, number>>;
-  cognitiveWeights: Partial<Record<keyof CognitiveProfile, number>>;
-  personalityWeights: Partial<Record<keyof PersonalityProfile, number>>;
-  strengths: string[];
-  weaknesses: string[];
-  opportunities: string[];
-  threats: string[];
-  skills: string[];
-};
-
-const careerTemplates: CareerTemplate[] = [
-  {
-    careerName: 'Software Engineer',
-    careerDescription: 'Builds digital products, apps, and platforms using structured problem solving.',
-    interestWeights: { investigative: 0.4, realistic: 0.25, conventional: 0.2, artistic: 0.15 },
-    cognitiveWeights: { logicalReasoning: 0.35, problemSolving: 0.3, numericalAptitude: 0.2, verbalAbility: 0.15 },
-    personalityWeights: { openness: 0.25, conscientiousness: 0.4, extraversion: 0.1, agreeableness: 0.15, neuroticism: -0.1 },
-    strengths: ['Strong demand across industries', 'Clear learning paths through projects', 'High flexibility in career growth'],
-    weaknesses: ['Requires continuous skill updates', 'Can involve long debugging cycles'],
-    opportunities: ['Remote global roles', 'AI-assisted development careers'],
-    threats: ['Fast-changing tool ecosystem', 'High competition for entry roles'],
-    skills: ['problem solving', 'coding fundamentals', 'system thinking'],
-  },
-  {
-    careerName: 'Data Scientist',
-    careerDescription: 'Finds insights in data to guide strategy, product decisions, and innovation.',
-    interestWeights: { investigative: 0.45, conventional: 0.25, realistic: 0.15, enterprising: 0.15 },
-    cognitiveWeights: { numericalAptitude: 0.35, logicalReasoning: 0.3, problemSolving: 0.2, verbalAbility: 0.15 },
-    personalityWeights: { openness: 0.3, conscientiousness: 0.35, extraversion: 0.1, agreeableness: 0.15, neuroticism: -0.1 },
-    strengths: ['Strong analytics orientation', 'High impact on decision-making', 'Cross-industry relevance'],
-    weaknesses: ['Needs math consistency', 'Modeling work can be iterative and slow'],
-    opportunities: ['AI and analytics expansion', 'Decision intelligence roles'],
-    threats: ['Tool automation for basic tasks', 'Data quality limitations in organizations'],
-    skills: ['statistics', 'data storytelling', 'experimentation'],
-  },
-  {
-    careerName: 'UX Designer',
-    careerDescription: 'Designs digital experiences that are useful, intuitive, and engaging for users.',
-    interestWeights: { artistic: 0.4, social: 0.25, investigative: 0.2, enterprising: 0.15 },
-    cognitiveWeights: { verbalAbility: 0.35, problemSolving: 0.3, logicalReasoning: 0.2, numericalAptitude: 0.15 },
-    personalityWeights: { openness: 0.35, conscientiousness: 0.25, extraversion: 0.2, agreeableness: 0.2, neuroticism: -0.1 },
-    strengths: ['Combines creativity with impact', 'Strong demand in product teams', 'Portfolio-driven career path'],
-    weaknesses: ['Requires feedback resilience', 'Decisions are often subjective'],
-    opportunities: ['Growing product ecosystem', 'Accessibility and inclusive design demand'],
-    threats: ['Crowded junior talent pool', 'Business constraints can reduce creative freedom'],
-    skills: ['user research', 'interaction design', 'visual communication'],
-  },
-  {
-    careerName: 'Teacher',
-    careerDescription: 'Guides learners through structured instruction and mentorship.',
-    interestWeights: { social: 0.45, artistic: 0.2, conventional: 0.2, enterprising: 0.15 },
-    cognitiveWeights: { verbalAbility: 0.4, problemSolving: 0.25, logicalReasoning: 0.2, numericalAptitude: 0.15 },
-    personalityWeights: { agreeableness: 0.35, conscientiousness: 0.3, extraversion: 0.2, openness: 0.15, neuroticism: -0.1 },
-    strengths: ['High social contribution', 'Strong communication development', 'Long-term career stability'],
-    weaknesses: ['Can be emotionally demanding', 'Administrative workload may be high'],
-    opportunities: ['EdTech integration', 'Specialized subject coaching'],
-    threats: ['Policy and curriculum shifts', 'Burnout risk without boundaries'],
-    skills: ['instructional planning', 'student support', 'public speaking'],
-  },
-  {
-    careerName: 'Entrepreneur',
-    careerDescription: 'Creates and grows ventures by identifying market needs and executing solutions.',
-    interestWeights: { enterprising: 0.45, social: 0.2, investigative: 0.2, artistic: 0.15 },
-    cognitiveWeights: { problemSolving: 0.3, verbalAbility: 0.25, logicalReasoning: 0.25, numericalAptitude: 0.2 },
-    personalityWeights: { extraversion: 0.3, openness: 0.25, conscientiousness: 0.2, agreeableness: 0.15, neuroticism: -0.1 },
-    strengths: ['Ownership and autonomy', 'High upside potential', 'Rapid learning environment'],
-    weaknesses: ['Income uncertainty in early stages', 'High responsibility pressure'],
-    opportunities: ['Digital-first business models', 'Niche market opportunities'],
-    threats: ['Funding constraints', 'Market volatility and competition'],
-    skills: ['initiative', 'decision making', 'sales and communication'],
-  },
-  {
-    careerName: 'Financial Analyst',
-    careerDescription: 'Evaluates financial data to support planning, investment, and business decisions.',
-    interestWeights: { conventional: 0.35, investigative: 0.3, enterprising: 0.2, realistic: 0.15 },
-    cognitiveWeights: { numericalAptitude: 0.4, logicalReasoning: 0.3, problemSolving: 0.2, verbalAbility: 0.1 },
-    personalityWeights: { conscientiousness: 0.35, openness: 0.2, extraversion: 0.15, agreeableness: 0.15, neuroticism: -0.1 },
-    strengths: ['Clear progression pathways', 'Strong relevance in all sectors', 'Data-driven decision influence'],
-    weaknesses: ['Detail-heavy work', 'Can involve repetitive analysis tasks'],
-    opportunities: ['FinTech growth', 'Strategic finance and planning roles'],
-    threats: ['Automation of routine reporting', 'Regulatory changes'],
-    skills: ['financial modeling', 'analysis', 'business communication'],
-  },
-  {
-    careerName: 'Psychologist',
-    careerDescription: 'Supports mental well-being through assessment, counseling, and evidence-based practice.',
-    interestWeights: { social: 0.45, investigative: 0.25, artistic: 0.15, conventional: 0.15 },
-    cognitiveWeights: { verbalAbility: 0.35, problemSolving: 0.25, logicalReasoning: 0.25, numericalAptitude: 0.15 },
-    personalityWeights: { agreeableness: 0.35, openness: 0.2, conscientiousness: 0.25, extraversion: 0.1, neuroticism: -0.1 },
-    strengths: ['High human impact', 'Wide specialization options', 'Meaningful long-term growth'],
-    weaknesses: ['Requires advanced training', 'Emotionally intensive practice'],
-    opportunities: ['Rising mental health awareness', 'Digital counseling and wellness programs'],
-    threats: ['Licensing and compliance requirements', 'Emotional fatigue without support'],
-    skills: ['active listening', 'ethical reasoning', 'behavioral analysis'],
-  },
-  {
-    careerName: 'Marketing Strategist',
-    careerDescription: 'Builds growth strategies through positioning, customer insights, and campaigns.',
-    interestWeights: { enterprising: 0.35, artistic: 0.25, social: 0.2, investigative: 0.2 },
-    cognitiveWeights: { verbalAbility: 0.3, problemSolving: 0.3, logicalReasoning: 0.2, numericalAptitude: 0.2 },
-    personalityWeights: { extraversion: 0.25, openness: 0.25, conscientiousness: 0.2, agreeableness: 0.2, neuroticism: -0.1 },
-    strengths: ['Creative and commercial balance', 'Fast-moving opportunities', 'Direct business impact'],
-    weaknesses: ['Performance pressure', 'Frequent strategy pivots'],
-    opportunities: ['Digital brand expansion', 'Creator economy and community-led growth'],
-    threats: ['Algorithm/platform dependency', 'Crowded channels'],
-    skills: ['campaign design', 'consumer psychology', 'communication'],
-  },
-];
-
 function timestampObject() {
   return {
     seconds: Math.floor(Date.now() / 1000),
@@ -164,112 +50,54 @@ function timestampObject() {
   };
 }
 
-function weightedScore<T extends Record<string, number>>(
-  profile: T,
-  weights: Partial<Record<keyof T, number>>,
-  options?: { invert?: Array<keyof T> },
-) {
-  const invert = new Set(options?.invert ?? []);
-  let totalWeight = 0;
-  let sum = 0;
+type BackendScoreResult = {
+  personality_profile: InsightXReportData['personalityProfile'];
+  interest_profile: InsightXReportData['interestProfile'];
+  cognitive_profile: Record<string, number>;
+  skill_profile: Record<string, number>;
+  cvq_profile: Record<string, number>;
+  picc_components: InsightXReportData['piccComponents'];
+  pic_index: number;
+  scoring_version: string;
+  generated_at: string;
+};
 
-  (Object.keys(weights) as Array<keyof T>).forEach((key) => {
-    const weight = weights[key] || 0;
-    const value = profile[key];
-    if (typeof value !== 'number') return;
-    const adjusted = invert.has(key) ? 100 - value : value;
-    totalWeight += weight;
-    sum += adjusted * weight;
-  });
+type BackendAssessment = {
+  general_info: {
+    name: string;
+    dob: string;
+    gender: string;
+    class_of_study: string;
+    place: string;
+    school_or_college: string;
+  };
+  answers: Record<string, Record<string, string>>;
+  score_result: BackendScoreResult | null;
+};
 
-  if (totalWeight === 0) return 50;
-  return Math.round(sum / totalWeight);
+function toInsightXReport(score: BackendScoreResult): InsightXReportData {
+  return {
+    personalityProfile: score.personality_profile,
+    interestProfile: score.interest_profile,
+    cognitiveProfile: score.cognitive_profile,
+    skillProfile: score.skill_profile,
+    cvqProfile: score.cvq_profile,
+    piccComponents: score.picc_components,
+    picIndex: score.pic_index,
+    scoringVersion: score.scoring_version,
+    generatedAt: score.generated_at,
+  };
 }
 
-function toReadableLabel(rawKey: string) {
-  return rawKey
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, (char) => char.toUpperCase())
-    .trim();
-}
-
-function topTraits<T extends Record<string, number>>(profile: T, count: number): string[] {
-  return Object.entries(profile)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, count)
-    .map(([key]) => toReadableLabel(key));
-}
-
-function buildSwotMarkdown(template: CareerTemplate, profile: {
-  personalityProfile: PersonalityProfile;
-  interestProfile: InterestProfile;
-  cognitiveProfile: CognitiveProfile;
-}) {
-  const dynamicStrength = `Your strongest interest style is ${topTraits(profile.interestProfile, 1)[0]}.`;
-  const dynamicGrowth = `Your top growth area is ${topTraits(profile.cognitiveProfile, 1)[0]} application in real projects.`;
-
-  return [
-    '**Strengths:**',
-    `- ${template.strengths[0]}`,
-    `- ${template.strengths[1]}`,
-    `- ${dynamicStrength}`,
-    '**Weaknesses:**',
-    `- ${template.weaknesses[0]}`,
-    `- ${template.weaknesses[1]}`,
-    `- ${dynamicGrowth}`,
-    '**Opportunities:**',
-    `- ${template.opportunities[0]}`,
-    `- ${template.opportunities[1]}`,
-    '**Threats:**',
-    `- ${template.threats[0]}`,
-    `- ${template.threats[1]}`,
-  ].join('\n');
-}
-
-function generateCareerSuggestionsFromProfile(profile: {
-  personalityProfile: PersonalityProfile;
-  interestProfile: InterestProfile;
-  cognitiveProfile: CognitiveProfile;
-}) {
-  const scored = careerTemplates
-    .map((template) => {
-      const interestScore = weightedScore(profile.interestProfile, template.interestWeights);
-      const cognitiveScore = weightedScore(profile.cognitiveProfile, template.cognitiveWeights);
-      const personalityScore = weightedScore(profile.personalityProfile, template.personalityWeights, {
-        invert: ['neuroticism'],
-      });
-      const score = Math.round(interestScore * 0.45 + cognitiveScore * 0.35 + personalityScore * 0.2);
-
-      const topInterestTraits = topTraits(profile.interestProfile, 2).join(' and ');
-      const topCognitiveTrait = topTraits(profile.cognitiveProfile, 1)[0];
-      const explanation = `This path aligns with your ${topInterestTraits} interests and your ${topCognitiveTrait} strength. It also matches the working style reflected in your personality profile.`;
-
-      const suggestion: CareerSuggestion = {
-        careerName: template.careerName,
-        careerDescription: template.careerDescription,
-        matchExplanation: explanation,
-        swotAnalysis: buildSwotMarkdown(template, profile),
-      };
-
-      return {
-        template,
-        score,
-        suggestion,
-      };
-    })
-    .sort((a, b) => b.score - a.score);
-
-  const topFive = scored.slice(0, 5);
-  const suggestions = topFive.map((item) => item.suggestion);
-  const domains = topFive.map((item) => ({
-    domainName: item.template.careerName,
-    description: item.template.careerDescription,
-    score: item.score,
-    swotAnalysis: item.suggestion.swotAnalysis,
-    careerPaths: item.template.skills.map((skill) => `${item.template.careerName} - ${toReadableLabel(skill)}`),
-  }));
-
-  return { suggestions, domains, scoredTop: topFive };
+function toLocalGeneralInfo(info: BackendAssessment['general_info']): GeneralInfo {
+  return {
+    name: info.name,
+    dob: info.dob,
+    gender: info.gender,
+    classOfStudy: info.class_of_study,
+    place: info.place,
+    schoolOrCollege: info.school_or_college,
+  };
 }
 
 function buildGoal(id: string, title: string, category: Goal['category'], description: string): Goal {
@@ -452,111 +280,58 @@ export async function getCareerSuggestions(input: SuggestCareersInput & { userId
     const userId = input.userId;
     if (!userId) throw new Error('User not authenticated.');
 
-    // 1. Submit assessment to FastAPI backend
-    try {
-      const backendAssessment = await fetchAPI<any>('/assessments', {
-        method: 'POST',
-        body: JSON.stringify({
-          general_info: {
-            name: input.generalInfo.name,
-            dob: input.generalInfo.dob,
-            gender: input.generalInfo.gender,
-            class_of_study: input.generalInfo.classOfStudy,
-            place: input.generalInfo.place,
-            school_or_college: input.generalInfo.schoolOrCollege,
-          },
-          personality: input.personality,
-          interest: input.interest,
-          cognitive_abilities: input.cognitiveAbilities,
-          self_reported_skills: input.selfReportedSkills || {},
-          cvq: input.cvq || {},
-        }),
-      });
-
-      // 2. Generate careers via FastAPI backend
-      const backendCareers = await fetchAPI<any>('/careers/generate', {
-        method: 'POST',
-      });
-
-      if (backendCareers.success && backendCareers.data) {
-        const suggestions: CareerSuggestion[] = backendCareers.data.suggestions.map((s: any) => ({
-          careerName: s.career_name,
-          careerDescription: s.career_description,
-          matchExplanation: s.match_explanation,
-          swotAnalysis: s.swot_analysis,
-        }));
-
-        const domains = backendCareers.data.domains.map((d: any) => ({
-          domainName: d.domain_name,
-          description: d.description,
-          score: d.score,
-          swotAnalysis: d.swot_analysis,
-          careerPaths: d.career_paths,
-        }));
-
-        const scoreRes = backendAssessment.data?.score_result;
-        const insightXReport = scoreRes
-          ? {
-              personalityProfile: {
-                openness: scoreRes.personality_profile.openness,
-                conscientiousness: scoreRes.personality_profile.conscientiousness,
-                extraversion: scoreRes.personality_profile.extraversion,
-                agreeableness: scoreRes.personality_profile.agreeableness,
-                neuroticism: scoreRes.personality_profile.neuroticism,
-              },
-              interestProfile: {
-                realistic: scoreRes.interest_profile.realistic,
-                investigative: scoreRes.interest_profile.investigative,
-                artistic: scoreRes.interest_profile.artistic,
-                social: scoreRes.interest_profile.social,
-                enterprising: scoreRes.interest_profile.enterprising,
-                conventional: scoreRes.interest_profile.conventional,
-              },
-              cognitiveProfile: {
-                logicalReasoning: scoreRes.cognitive_profile.logical_reasoning,
-                verbalAbility: scoreRes.cognitive_profile.verbal_ability,
-                problemSolving: scoreRes.cognitive_profile.problem_solving,
-                numericalAptitude: scoreRes.cognitive_profile.numerical_aptitude,
-              },
-              picIndex: scoreRes.pic_index,
-              generatedAt: scoreRes.generated_at,
-            }
-          : generateInsightXReport({
-              personality: input.personality,
-              interest: input.interest,
-              cognitiveAbilities: input.cognitiveAbilities,
-            });
-
-        upsertUserRecord(userId, (existing) => ({
-          ...existing,
-          assessment: {
-            ...input,
-            updatedAt: new Date().toISOString(),
-          },
-          careerDomains: domains,
-          careerSuggestions: suggestions,
-          insightXReport,
-        }));
-
-        return { success: true, data: suggestions, domains, insightXReport };
-      }
-    } catch (apiErr) {
-      console.warn('Backend assessment submission failed, falling back to local computation:', apiErr);
-    }
-
-    // Fallback to local computation
-    const insightXReport = generateInsightXReport({
-      personality: input.personality,
-      interest: input.interest,
-      cognitiveAbilities: input.cognitiveAbilities,
+    const backendAssessment = await fetchAPI<BackendAssessment>('/assessments', {
+      method: 'POST',
+      body: JSON.stringify({
+        general_info: {
+          name: input.generalInfo.name,
+          dob: input.generalInfo.dob,
+          gender: input.generalInfo.gender,
+          class_of_study: input.generalInfo.classOfStudy,
+          place: input.generalInfo.place,
+          school_or_college: input.generalInfo.schoolOrCollege,
+        },
+        personality: input.personality,
+        interest: input.interest,
+        cognitive_abilities: input.cognitiveAbilities,
+        self_reported_skills: input.selfReportedSkills || {},
+        cvq: input.cvq || {},
+      }),
     });
 
-    const { suggestions, domains } = generateCareerSuggestionsFromProfile(insightXReport);
+    const scoreResult = backendAssessment.data.score_result;
+    if (!scoreResult) {
+      throw new Error('The assessment was saved but no score result was returned.');
+    }
+
+    const backendCareers = await fetchAPI<any>('/careers/generate', {
+      method: 'POST',
+    });
+    if (!backendCareers.success || !backendCareers.data) {
+      throw new Error('Career suggestions could not be generated.');
+    }
+
+    const suggestions: CareerSuggestion[] = backendCareers.data.suggestions.map((s: any) => ({
+      careerName: s.career_name,
+      careerDescription: s.career_description,
+      matchExplanation: s.match_explanation,
+      swotAnalysis: s.swot_analysis,
+    }));
+    const domains = backendCareers.data.domains.map((d: any) => ({
+      domainName: d.domain_name,
+      description: d.description,
+      score: d.score,
+      swotAnalysis: d.swot_analysis,
+      careerPaths: d.career_paths,
+    }));
+    const insightXReport = toInsightXReport(scoreResult);
 
     upsertUserRecord(userId, (existing) => ({
       ...existing,
       assessment: {
         ...input,
+        generalInfo: toLocalGeneralInfo(backendAssessment.data.general_info),
+        canonicalAnswers: backendAssessment.data.answers,
         updatedAt: new Date().toISOString(),
       },
       careerDomains: domains,
@@ -676,6 +451,26 @@ export async function getUserData(userId: string) {
     return { success: true, data: record };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user data.';
+    return { success: false, error: errorMessage };
+  }
+}
+
+export async function getLatestAssessmentResult() {
+  try {
+    const result = await fetchAPI<BackendAssessment>('/assessments/latest');
+    if (!result.data.score_result) {
+      return { success: false, error: 'Assessment scores are not available yet.' };
+    }
+
+    return {
+      success: true,
+      data: {
+        generalInfo: toLocalGeneralInfo(result.data.general_info),
+        insightXReport: toInsightXReport(result.data.score_result),
+      },
+    };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch assessment scores.';
     return { success: false, error: errorMessage };
   }
 }
@@ -808,14 +603,12 @@ export async function downloadPdfReport(userId: string): Promise<{ success: bool
     // Skills: s1–s20 → Q61–Q80
     remapKeys(assessment.selfReportedSkills, 's', 60);
 
-    // CVQ needs special mapping since the frontend groups don't match backend Q-numbers.
-    // Frontend v1-v2 = Cultural (backend Q91-Q92), v3-v4 = Language (Q76-Q77),
-    // v5-v6 = Digital (Q81-Q82), v7-v10 = Financial (Q86-Q89)
+    // CVQ questions map directly to Q71-Q90 in the Grade 12 module.
     const cvqMapping: Record<string, string> = {
-      v1: 'Q91', v2: 'Q92',
-      v3: 'Q76', v4: 'Q77',
-      v5: 'Q81', v6: 'Q82',
-      v7: 'Q86', v8: 'Q87', v9: 'Q88', v10: 'Q89',
+      v1: 'Q71', v2: 'Q72', v3: 'Q73', v4: 'Q74', v5: 'Q75',
+      v6: 'Q76', v7: 'Q77', v8: 'Q78', v9: 'Q79', v10: 'Q80',
+      v11: 'Q81', v12: 'Q82', v13: 'Q83', v14: 'Q84', v15: 'Q85',
+      v16: 'Q86', v17: 'Q87', v18: 'Q88', v19: 'Q89', v20: 'Q90',
     };
     if (assessment.cvq) {
       for (const [key, value] of Object.entries(assessment.cvq as Record<string, any>)) {
@@ -860,12 +653,25 @@ export async function downloadPdfReport(userId: string): Promise<{ success: bool
       return { success: false, error: errMsg };
     }
 
-    // Receive PDF blob and trigger download
-    const blob = await response.blob();
+    // Parse the JSON response and decode the base64-encoded PDF
+    const data = await response.json();
+
+    if (!data.isSuccess || !data.pdf_base64) {
+      return { success: false, error: data.message || 'Report generation failed.' };
+    }
+
+    // Decode base64 string to binary
+    const byteCharacters = atob(data.pdf_base64);
+    const byteNumbers = new Uint8Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const blob = new Blob([byteNumbers], { type: 'application/pdf' });
+
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${studentName}_InsightXReport.pdf`;
+    link.download = data.pdf_filename || `${studentName}_InsightXReport.pdf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -891,3 +697,159 @@ export async function fetchAssessmentQuestions(grade: number = 10) {
   }
 }
 
+/**
+ * Helper to build the studentResponses payload from localStorage assessment data.
+ * Shared between downloadPdfReport and generatePathXploreReport.
+ */
+function buildStudentResponsesPayload(assessment: Record<string, any>): {
+  studentName: string;
+  studentClass: string;
+  schoolName: string;
+  studentResponses: Record<string, any>;
+  coginitiveAnswerkey: any;
+} {
+  const generalInfo = assessment.generalInfo || {};
+  const studentName = generalInfo.name || 'Student';
+  const studentClass = generalInfo.classOfStudy || '12';
+  const schoolName = generalInfo.schoolOrCollege || '';
+
+  const studentResponses: Record<string, any> = {};
+
+  function remapKeys(
+    section: Record<string, any> | undefined,
+    prefix: string,
+    qOffset: number,
+  ) {
+    if (!section) return;
+    for (const [key, value] of Object.entries(section)) {
+      const match = key.match(new RegExp(`^${prefix}(\\d+)$`));
+      if (match) {
+        const num = parseInt(match[1], 10);
+        const qKey = `Q${qOffset + num}`;
+        studentResponses[qKey] = typeof value === 'string' && !isNaN(Number(value))
+          ? Number(value)
+          : value;
+      }
+    }
+  }
+
+  remapKeys(assessment.personality, 'p', 0);
+  remapKeys(assessment.interest, 'i', 20);
+  remapKeys(assessment.cognitiveAbilities, 'c', 40);
+  remapKeys(assessment.selfReportedSkills, 's', 60);
+
+  const cvqMapping: Record<string, string> = {
+    v1: 'Q71', v2: 'Q72', v3: 'Q73', v4: 'Q74', v5: 'Q75',
+    v6: 'Q76', v7: 'Q77', v8: 'Q78', v9: 'Q79', v10: 'Q80',
+    v11: 'Q81', v12: 'Q82', v13: 'Q83', v14: 'Q84', v15: 'Q85',
+    v16: 'Q86', v17: 'Q87', v18: 'Q88', v19: 'Q89', v20: 'Q90',
+  };
+  if (assessment.cvq) {
+    for (const [key, value] of Object.entries(assessment.cvq as Record<string, any>)) {
+      const qKey = cvqMapping[key];
+      if (qKey) {
+        studentResponses[qKey] = typeof value === 'string' && !isNaN(Number(value))
+          ? Number(value)
+          : value;
+      }
+    }
+  }
+
+  for (let i = 1; i <= 40; i++) {
+    if (studentResponses[`Q${i}`] === undefined || studentResponses[`Q${i}`] === null) {
+      studentResponses[`Q${i}`] = 3;
+    }
+  }
+  for (let i = 61; i <= 70; i++) {
+    if (studentResponses[`Q${i}`] === undefined || studentResponses[`Q${i}`] === null) {
+      studentResponses[`Q${i}`] = 3;
+    }
+  }
+
+  return {
+    studentName,
+    studentClass,
+    schoolName,
+    studentResponses,
+    coginitiveAnswerkey: assessment.cognitiveAnswerkey || null,
+  };
+}
+
+/**
+ * Generate the PathXplore career intelligence report.
+ * Returns structured career data (SWOT, domains, clusters, top choices) and optionally
+ * triggers a PDF download. Results are cached in localStorage.
+ */
+export async function generatePathXploreReport(
+  userId: string,
+  downloadPdf: boolean = false,
+): Promise<{ success: boolean; data?: PathXploreData; error?: string }> {
+  try {
+    if (!userId) {
+      return { success: false, error: 'User not authenticated.' };
+    }
+
+    const record = getUserRecord(userId);
+    if (!record) {
+      return { success: false, error: 'User data not found.' };
+    }
+
+    const assessment = record.assessment;
+    if (!assessment) {
+      return { success: false, error: 'Please complete the assessment first.' };
+    }
+
+    const payload = buildStudentResponsesPayload(assessment);
+
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+
+    const response = await fetch(`${API_BASE_URL}/pathxplore-report`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errBody = await response.json().catch(() => null);
+      const errMsg = errBody?.detail || `Server error (${response.status})`;
+      return { success: false, error: errMsg };
+    }
+
+    const data = await response.json();
+
+    if (!data.isSuccess || !data.pathxplore_data) {
+      return { success: false, error: data.message || 'PathXplore report generation failed.' };
+    }
+
+    const pathxploreData: PathXploreData = data.pathxplore_data;
+
+    // Cache in localStorage
+    upsertUserRecord(userId, (rec) => ({
+      ...rec,
+      pathXploreData: pathxploreData,
+    }));
+
+    // Optionally trigger PDF download
+    if (downloadPdf && data.pdf_base64) {
+      const byteCharacters = atob(data.pdf_base64);
+      const byteNumbers = new Uint8Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const blob = new Blob([byteNumbers], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = data.pdf_filename || `${payload.studentName}_PathXploreReport.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }
+
+    return { success: true, data: pathxploreData };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to generate PathXplore report.';
+    return { success: false, error: errorMessage };
+  }
+}

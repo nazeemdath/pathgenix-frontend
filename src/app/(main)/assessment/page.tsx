@@ -12,7 +12,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { LoadingSpinner } from '@/components/loading-spinner';
-import { getCareerSuggestions, sendParentQuiz, fetchAssessmentQuestions, getUserData } from '@/lib/actions';
+import { getCareerSuggestions, sendParentQuiz, getUserData } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 import { AlertCircle, ArrowLeft, ArrowRight, Calendar as CalendarIcon, Clock, Mail, Sparkles, RefreshCw, Edit3, CheckCircle2, UserCheck } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -28,114 +28,114 @@ import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescript
 
 
 const assessmentSections = [
-  { id: 'personality', title: 'Personality Assessment', questions: 20, time: 15 * 60, instructions: 'Rate how much each statement describes you on a scale of 1 (Strongly Disagree) to 5 (Strongly Agree).' },
-  { id: 'interest', title: 'Interest Inventory', questions: 20, time: 10 * 60, instructions: 'Indicate how much you would enjoy performing each activity on a scale of 1 (Strongly Dislike) to 5 (Strongly Like).' },
-  { id: 'cognitive', title: 'Cognitive Capability + Skill Mapping', questions: 40, time: 25 * 60, instructions: 'This section has two parts. First, answer 20 cognitive ability questions. Then, self-assess your skills with 20 skill mapping questions.' },
-  { id: 'cvq', title: 'Contextual Viability Quotient (CVQ™)', questions: 10, time: 10 * 60, instructions: 'Rate how much you agree with each statement on a scale of 1 (Strongly Disagree) to 5 (Strongly Agree) for your top career choice.' }
+  { id: 'personality', title: 'Personality Assessment', questions: 20, time: 10 * 60, instructions: 'Rate how much each statement describes you on a scale of 1 (Strongly Disagree) to 5 (Strongly Agree).' },
+  { id: 'interest', title: 'Interest Inventory', questions: 20, time: 15 * 60, instructions: 'Indicate how much you would enjoy performing each activity on a scale of 1 (Strongly Dislike) to 5 (Strongly Like).' },
+  { id: 'cognitive', title: 'Cognitive Capability + Skill Mapping', questions: 30, time: 25 * 60, instructions: 'This section has two parts. First, answer 20 cognitive ability questions. Then, self-assess 10 skill mapping questions.' },
+  { id: 'cvq', title: 'Contextual Viability Quotient (CVQ™)', questions: 20, time: 10 * 60, instructions: 'Rate how much you agree with each statement on a scale of 1 (Strongly Disagree) to 5 (Strongly Agree).' }
 ];
 
 const totalTime = assessmentSections.reduce((acc, section) => acc + section.time, 0);
 
 const defaultAssessmentQuestions = {
   personality: [
-    { id: 'p1', question: 'I enjoy being the center of attention in a group.' },
-    { id: 'p2', question: 'I make sure my school assignments are neat and organized.' },
-    { id: 'p3', question: 'I love learning about new and unusual things.' },
-    { id: 'p4', question: 'I sometimes get anxious or worried about small things.' },
-    { id: 'p5', question: 'I try to be kind and considerate to everyone.' },
-    { id: 'p6', question: 'I always finish what I start, even if it\'s difficult.' },
-    { id: 'p7', question: 'I often come up with creative ideas for school projects or hobbies.' },
-    { id: 'p8', question: 'I am reliable and people can count on me.' },
-    { id: 'p9', question: 'I am good at understanding how others are feeling.' },
-    { id: 'p10', question: 'I tend to overthink things and get stressed.' },
-    { id: 'p11', question: 'I like to explore different cultures and ideas.' },
-    { id: 'p12', question: 'I enjoy taking charge when working on a group project.' },
-    { id: 'p13', question: 'I believe most people are honest and trustworthy.' },
-    { id: 'p14', question: 'I set high standards for myself in schoolwork.' },
-    { id: 'p15', question: 'I feel energized when I\'m around a lot of people.' },
-    { id: 'p16', question: 'I sometimes feel overwhelmed by my emotions.' },
-    { id: 'p17', question: 'I am very imaginative and like to daydream.' },
-    { id: 'p18', question: 'I prefer to stick to a schedule and routine.' },
-    { id: 'p19', question: 'I usually stay calm, even in stressful situations.' },
-    { id: 'p20', question: 'I prefer to spend my free time alone or with a few close friends.' }
+    { id: 'p1', question: 'I take full responsibility for my academic and career-related decisions.' },
+    { id: 'p2', question: 'I am comfortable handling high academic pressure.' },
+    { id: 'p3', question: 'I plan my studies based on long-term goals.' },
+    { id: 'p4', question: 'I express my opinions confidently in academic discussions.' },
+    { id: 'p5', question: 'I remain calm during major examinations.' },
+    { id: 'p6', question: 'I support peers when they face academic challenges.' },
+    { id: 'p7', question: 'I complete academic work even when motivation is low.' },
+    { id: 'p8', question: 'I actively seek knowledge beyond the prescribed syllabus.' },
+    { id: 'p9', question: 'I feel anxious when outcomes are uncertain.' },
+    { id: 'p10', question: 'I prefer working in a structured and organised manner.' },
+    { id: 'p11', question: 'I am confident speaking in front of groups or audiences.' },
+    { id: 'p12', question: 'I take my commitments and responsibilities seriously.' },
+    { id: 'p13', question: 'I consider multiple viewpoints before forming opinions.' },
+    { id: 'p14', question: 'I can maintain focus during long study sessions.' },
+    { id: 'p15', question: 'I am comfortable interacting with new people.' },
+    { id: 'p16', question: 'I adapt calmly when academic or personal plans change.' },
+    { id: 'p17', question: 'I prefer clarity and structure in academic expectations.' },
+    { id: 'p18', question: 'I stay motivated to perform consistently well.' },
+    { id: 'p19', question: 'I enjoy analysing complex ideas and arguments.' },
+    { id: 'p20', question: 'I handle academic stress better than most students my age.' }
   ],
   interest: [
-    { id: 'i1', question: 'Creating a new game or app idea for my phone.' },
-    { id: 'i2', question: 'Mentoring a younger student or helping a classmate with their studies.' },
-    { id: 'i3', question: 'Building or fixing things with my hands (e.g., models, electronics).' },
-    { id: 'i4', question: 'Organizing a school event or a group project.' },
-    { id: 'i5', question: 'Conducting experiments in a science lab.' },
-    { id: 'i6', question: 'Writing stories, poems, or creating digital art.' },
-    { id: 'i7', question: 'Keeping my notes and files perfectly organized.' },
-    { id: 'i8', question: 'Volunteering for a community service project.' },
-    { id: 'i9', question: 'Learning how machines or devices work.' },
-    { id: 'i10', question: 'Leading a club or a school group.' },
-    { id: 'i11', question: 'Researching a topic in depth for a school report.' },
-    { id: 'i12', question: 'Performing in a play, band, or debate.' },
-    { id: 'i13', question: 'Working with numbers and keeping track of finances (e.g., for a school club).' },
-    { id: 'i14', question: 'Helping people who are facing difficulties.' },
-    { id: 'i15', question: 'Designing and building something physical (e.g., a robot, a craft).' },
-    { id: 'i16', question: 'Convincing others to support an idea or project.' },
-    { id: 'i17', question: 'Solving complex math problems or logic puzzles.' },
-    { id: 'i18', question: 'Expressing my thoughts clearly in written essays or presentations.' },
-    { id: 'i19', question: 'Working with plants or animals in a garden or farm.' },
-    { id: 'i20', question: 'Imagining new inventions or solutions to problems.' }
+    { id: 'i1', question: 'Solving complex or abstract problems.' },
+    { id: 'i2', question: 'Understanding theories, systems, or mechanisms in depth.' },
+    { id: 'i3', question: 'Designing frameworks, models, or original ideas.' },
+    { id: 'i4', question: 'Teaching, mentoring, or guiding others.' },
+    { id: 'i5', question: 'Organising information or processes efficiently.' },
+    { id: 'i6', question: 'Conducting experiments, research, or investigations.' },
+    { id: 'i7', question: 'Engaging in strategic or simulation-based activities.' },
+    { id: 'i8', question: 'Writing analytical essays, articles, or creative content.' },
+    { id: 'i9', question: 'Leading teams or coordinating group work.' },
+    { id: 'i10', question: 'Working with numbers, data, or formulas.' },
+    { id: 'i11', question: 'Learning about advanced technology or innovation.' },
+    { id: 'i12', question: 'Creating solutions to real-world problems.' },
+    { id: 'i13', question: 'Persuading others using logic and evidence.' },
+    { id: 'i14', question: 'Following complex instructions accurately.' },
+    { id: 'i15', question: 'Exploring digital tools for learning or productivity.' },
+    { id: 'i16', question: 'Studying social, economic, or environmental issues.' },
+    { id: 'i17', question: 'Managing deadlines, schedules, and responsibilities.' },
+    { id: 'i18', question: 'Participating in debates or formal discussions.' },
+    { id: 'i19', question: 'Building, assembling, or designing structured models.' },
+    { id: 'i20', question: 'Performing work that requires precision and discipline.' }
   ],
   cognitive: [
-    { id: 'c1', question: 'Which word is the odd one out: Apple, Banana, Carrot, Orange, Grape?', options: ['Apple', 'Banana', 'Carrot', 'Orange', 'Grape'] },
-    { id: 'c2', question: 'Complete the series: 2, 4, 8, 16, ?', options: ['20', '24', '32', '36'] },
-    { id: 'c3', question: 'If a bird is to flying as a fish is to ____?', options: ['Swimming', 'Jumping', 'Eating', 'Singing'] },
-    { id: 'c4', question: 'Which shape comes next in the sequence: Triangle, Square, Pentagon, Hexagon, ?', options: ['Heptagon', 'Octagon', 'Circle', 'Star'] },
-    { id: 'c5', question: 'A cyclist travels 10 km in 20 minutes. How far will they travel in 1 hour?', options: ['10 km', '20 km', '30 km', '40 km'] },
-    { id: 'c6', question: 'Find the missing number: 1, 3, 6, 10, ?', options: ['13', '14', '15', '16'] },
-    { id: 'c7', question: 'Which word is the odd one out: Book, Pen, Pencil, Eraser, Desk?', options: ['Book', 'Pen', 'Pencil', 'Eraser', 'Desk'] },
-    { id: 'c8', question: 'If all students are learners, and all learners are curious, then all students are curious. True or False?', options: ['True', 'False'] },
-    { id: 'c9', question: 'Which of the following is the next logical step in the pattern: AB, CD, EF, GH, ?', options: ['IJ', 'KL', 'JK', 'HI'] },
-    { id: 'c10', question: 'If you rearrange the letters \'TINAP\', you would have the name of a(n):', options: ['Animal', 'Fruit', 'Color', 'Country'] },
-    { id: 'c11', question: 'A recipe calls for 2 cups of flour for 8 cookies. How much flour is needed for 16 cookies?', options: ['2 cups', '3 cups', '4 cups', '6 cups'] },
-    { id: 'c12', question: 'Which word is the opposite of \'Brave\': Fearful, Strong, Bold, Heroic?', options: ['Fearful', 'Strong', 'Bold', 'Heroic'] },
-    { id: 'c13', question: 'If a baker can decorate 12 cakes in 3 hours, how many cakes can they decorate in 1 hour?', options: ['3 cakes', '4 cakes', '6 cakes', '12 cakes'] },
-    { id: 'c14', question: 'Complete the sequence: Z, X, V, T, ?', options: ['S', 'U', 'R', 'Q'] },
-    { id: 'c15', question: 'Which of these is an even number: 5, 7, 9, 10?', options: ['5', '7', '9', '10'] },
-    { id: 'c16', question: 'Rahul is taller than Priya. Priya is taller than Sameer. Is Rahul taller than Sameer?', options: ['Yes', 'No', 'Cannot Say'] },
-    { id: 'c17', question: 'Which word is the odd one out: Happy, Sad, Angry, Excited, Sleepy?', options: ['Happy', 'Sad', 'Angry', 'Excited', 'Sleepy'] },
-    { id: 'c18', question: 'If 3 friends share 15 chocolates equally, how many chocolates does each friend get?', options: ['3', '5', '10', '15'] },
-    { id: 'c19', question: 'Which set of letters completes the pattern: AZ, BY, CX, DW, ?', options: ['EV', 'FU', 'GT', 'HS'] },
-    { id: 'c20', question: 'What is 25% of 80?', options: ['10', '20', '25', '40'] }
+    { id: 'c1', question: 'Which word does NOT belong to the group? Physics, Chemistry, Biology, Sociology', options: ['Physics', 'Chemistry', 'Biology', 'Sociology'] },
+    { id: 'c2', question: 'What comes next in the sequence? 10, 20, 40, 80, ___', options: ['120', '140', '160', '180'] },
+    { id: 'c3', question: 'If all economists are analysts and some students are economists, are some students analysts?', options: ['Yes', 'No', 'Cannot be determined'] },
+    { id: 'c4', question: 'Which figure has the greatest area?', options: ['Triangle', 'Square', 'Rectangle', 'Circle'] },
+    { id: 'c5', question: 'Find the odd number. 18, 36, 54, 72, 75', options: ['18', '36', '54', '75', '72'] },
+    { id: 'c6', question: 'If today is Friday, what day will it be after 17 days?', options: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'] },
+    { id: 'c7', question: 'Choose the word closest in meaning to "Evaluate".', options: ['Guess', 'Assess', 'Ignore', 'Delay'] },
+    { id: 'c8', question: 'Engineer : Project :: Doctor : ____', options: ['Hospital', 'Patient', 'Medicine', 'Clinic'] },
+    { id: 'c9', question: 'Find the missing number. 15, 30, __, 60, 75', options: ['40', '45', '50', '55'] },
+    { id: 'c10', question: 'Rearrange the letters of the word POTENTIAL.', options: ['LATENTIOP', 'POTENTIAL', 'TENAPOILT', 'TEPOLANTI'] },
+    { id: 'c11', question: 'Which fraction is larger?', options: ['9/10', '8/9'] },
+    { id: 'c12', question: 'Find the pattern. E, J, O, T, ___', options: ['U', 'V', 'W', 'Y'] },
+    { id: 'c13', question: 'Which one is a renewable resource?', options: ['Coal', 'Petroleum', 'Wind', 'Gas'] },
+    { id: 'c14', question: 'If one coaching session costs ₹500, how much do 6 sessions cost?', options: ['₹2,800', '₹3,000', '₹3,200', '₹3,500'] },
+    { id: 'c15', question: 'Which word is spelled correctly?', options: ['Entreprenuer', 'Entrepreneur', 'Entreprenaur', 'Entreprenur'] },
+    { id: 'c16', question: 'Which comes first alphabetically?', options: ['Analyse', 'Apply', 'Assess', 'Assume'] },
+    { id: 'c17', question: 'If all professionals are workers, are all workers professionals?', options: ['Yes', 'No'] },
+    { id: 'c18', question: 'Which one is different? Cube, Sphere, Cylinder, Pyramid', options: ['Cube', 'Sphere', 'Cylinder', 'Pyramid'] },
+    { id: 'c19', question: 'What is 30% of 450?', options: ['120', '125', '135', '150'] },
+    { id: 'c20', question: 'Which is heavier?', options: ['20 kg of cotton', '20 kg of iron', 'Both are equal'] }
   ],
   skillMapping: [
-    { id: 's1', question: 'I am confident sharing my ideas in front of my class.' },
-    { id: 's2', question: 'I can quickly figure out how to use a new app or software.' },
-    { id: 's3', question: 'I am good at explaining difficult topics to my friends.' },
-    { id: 's4', question: 'I often think of unique ways to do school projects.' },
-    { id: 's5', question: 'I keep my school bag and study area organized.' },
-    { id: 's6', question: 'I enjoy working with others on group assignments.' },
-    { id: 's7', question: 'I am good at solving brain teasers or riddles.' },
-    { id: 's8', question: 'I can adjust easily when plans change unexpectedly.' },
-    { id: 's9', question: 'I am good at writing clear and persuasive essays.' },
-    { id: 's10', question: 'I feel comfortable giving presentations or speeches.' },
-    { id: 's11', question: 'I am good at managing my time effectively to meet deadlines.' },
-    { id: 's12', question: 'I can work well under pressure and stay focused.' },
-    { id: 's13', question: 'I am resourceful when faced with limited tools or information.' },
-    { id: 's14', question: 'I am good at finding solutions to problems independently.' },
-    { id: 's15', question: 'I can effectively manage multiple tasks at once.' },
-    { id: 's16', question: 'I am comfortable learning and adapting to new technologies quickly.' },
-    { id: 's17', question: 'I am good at analyzing information to make decisions.' },
-    { id: 's18', question: 'I can clearly express my ideas in writing.' },
-    { id: 's19', question: 'I am skilled at resolving conflicts or disagreements in a group.' },
-    { id: 's20', question: 'I am comfortable taking initiative and leading a task.' }
+    { id: 's1', question: 'I can explain complex ideas clearly to others.' },
+    { id: 's2', question: 'I manage my study time effectively across subjects.' },
+    { id: 's3', question: 'I learn new digital tools quickly.' },
+    { id: 's4', question: 'I work effectively in collaborative academic tasks.' },
+    { id: 's5', question: 'I remain focused during extended study hours.' },
+    { id: 's6', question: 'I complete tasks on time without reminders.' },
+    { id: 's7', question: 'I attempt problem-solving independently before seeking help.' },
+    { id: 's8', question: 'I adapt when academic or life plans change.' },
+    { id: 's9', question: 'I feel comfortable asking questions in class.' },
+    { id: 's10', question: 'I take initiative when responsibility is required.' }
   ],
   cvq: [
-    { id: 'v1', section: 'Cultural & Societal Compatibility', question: 'I am free to pursue any career, regardless of family traditions or expectations.' },
-    { id: 'v2', section: 'Cultural & Societal Compatibility', question: 'My family does not interfere in my career decision-making.' },
-    { id: 'v3', section: 'Language Readiness (Current + Future)', question: 'I can currently read, write, and speak in English or the required career language.' },
-    { id: 'v4', section: 'Language Readiness (Current + Future)', question: 'I understand lectures, videos, or tutorials in English without needing translations.' },
-    { id: 'v5', section: 'Digital Access & Tech Confidence', question: 'I have regular access to a smartphone with internet.' },
-    { id: 'v6', section: 'Digital Access & Tech Confidence', question: 'I have access to a laptop or desktop at least 3 days per week.' },
-    { id: 'v7', section: 'Financial & Geographic Readiness', question: 'I can afford entrance or coaching exam fees over the next year.' },
-    { id: 'v8', section: 'Financial & Geographic Readiness', question: 'My financial situation may limit my choice of college or career options. (reverse scored)' },
-    { id: 'v9', section: 'Financial & Geographic Readiness', question: 'I am willing to apply for scholarships or part-time jobs to support my career goals.' },
-    { id: 'v10', 'section': 'Financial & Geographic Readiness', question: 'I am willing to relocate to another city/state/country for education or work.' }
+    { id: 'v1', section: 'Cultural & Parental Support', question: 'My family supports my education goals.' },
+    { id: 'v2', section: 'Cultural & Parental Support', question: 'I am encouraged to explore different interests.' },
+    { id: 'v3', section: 'Cultural & Parental Support', question: 'My parents listen to my academic concerns.' },
+    { id: 'v4', section: 'Cultural & Parental Support', question: 'I feel comfortable discussing my future with my family.' },
+    { id: 'v5', section: 'Cultural & Parental Support', question: 'I receive guidance at home when needed.' },
+    { id: 'v6', section: 'Language Readiness', question: 'I understand most of my subjects taught in English.' },
+    { id: 'v7', section: 'Language Readiness', question: 'I can express my ideas clearly in English.' },
+    { id: 'v8', section: 'Language Readiness', question: 'I am willing to improve my language skills.' },
+    { id: 'v9', section: 'Language Readiness', question: 'I can follow online lessons without much difficulty.' },
+    { id: 'v10', section: 'Language Readiness', question: 'Language is not a major barrier to my learning.' },
+    { id: 'v11', section: 'Digital Access & Tech Confidence', question: 'I have regular access to the internet.' },
+    { id: 'v12', section: 'Digital Access & Tech Confidence', question: 'I use digital devices for learning.' },
+    { id: 'v13', section: 'Digital Access & Tech Confidence', question: 'I am comfortable attending online classes.' },
+    { id: 'v14', section: 'Digital Access & Tech Confidence', question: 'I can search for information online on my own.' },
+    { id: 'v15', section: 'Digital Access & Tech Confidence', question: 'I use technology responsibly.' },
+    { id: 'v16', section: 'Financial & Geographic Readiness', question: 'My family can support my education needs.' },
+    { id: 'v17', section: 'Financial & Geographic Readiness', question: 'I am open to studying in another city if required.' },
+    { id: 'v18', section: 'Financial & Geographic Readiness', question: 'I understand that education requires planning.' },
+    { id: 'v19', section: 'Financial & Geographic Readiness', question: 'My home environment supports focused study.' },
+    { id: 'v20', section: 'Financial & Geographic Readiness', question: 'I am willing to work hard to achieve my future goals.' }
   ]
 };
 
@@ -254,49 +254,12 @@ export default function AssessmentPage() {
   const [isTestActive, setIsTestActive] = React.useState(false);
   const [sectionTimeLeft, setSectionTimeLeft] = React.useState(0);
   const [isTimeUp, setIsTimeUp] = React.useState(false);
-  const [dynamicQuestions, setDynamicQuestions] = React.useState<any>(null);
-  const [isLoadingQuestions, setIsLoadingQuestions] = React.useState(false);
 
   const { toast } = useToast();
 
   const submittedRef = React.useRef(false);
 
-  const assessmentQuestions: {
-    personality: Array<{ id: string; question: string; options?: string[] }>;
-    interest: Array<{ id: string; question: string; options?: string[] }>;
-    cognitive: Array<{ id: string; question: string; options?: string[] }>;
-    skillMapping: Array<{ id: string; question: string; options?: string[] }>;
-    cvq: Array<{ id: string; question: string; section?: string; options?: string[] }>;
-  } = React.useMemo(() => {
-    if (!dynamicQuestions) return defaultAssessmentQuestions;
-
-    return {
-      personality: (dynamicQuestions.personality || []).map((q: any) => ({
-        id: q.code,
-        question: q.question_text,
-      })),
-      interest: (dynamicQuestions.interest || []).map((q: any) => ({
-        id: q.code,
-        question: q.question_text,
-      })),
-      cognitive: (dynamicQuestions.cognitive || []).map((q: any) => ({
-        id: q.code,
-        question: q.question_text,
-        options: q.options && q.options.length > 0 ? q.options : undefined,
-      })),
-      skillMapping: (dynamicQuestions.skills || []).map((q: any) => ({
-        id: q.code,
-        question: q.question_text,
-      })),
-      cvq: (dynamicQuestions.cvq || []).map((q: any) => ({
-        id: q.code,
-        section: q.dimension
-          ? q.dimension.charAt(0).toUpperCase() + q.dimension.slice(1).replace(/_/g, ' ')
-          : 'General',
-        question: q.question_text,
-      })),
-    };
-  }, [dynamicQuestions]);
+  const assessmentQuestions = defaultAssessmentQuestions;
 
   React.useEffect(() => {
     if (!authLoading && !user) {
@@ -389,26 +352,7 @@ export default function AssessmentPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [sectionTimeLeft, isTestActive, currentStep]);
 
-  const handleProceedToQuestions = async () => {
-    const gradeMatch = classOfStudy.match(/\d+/);
-    const gradeNum = gradeMatch ? parseInt(gradeMatch[0], 10) : 10;
-
-    setIsLoadingQuestions(true);
-    try {
-      const res = await fetchAssessmentQuestions(gradeNum);
-      if (res && res.success && 'data' in res && res.data?.sections) {
-        setDynamicQuestions(res.data.sections);
-        toast({
-          title: `Grade ${gradeNum} Assessment Configured`,
-          description: `Loaded dynamic question bank tailored for Grade ${gradeNum}.`,
-        });
-      }
-    } catch (e) {
-      console.warn('Could not load dynamic questions, using default question bank:', e);
-    } finally {
-      setIsLoadingQuestions(false);
-    }
-
+  const handleProceedToQuestions = () => {
     handleNext();
   };
 
@@ -619,17 +563,9 @@ export default function AssessmentPage() {
                 onClick={handleProceedToQuestions}
                 size="lg"
                 className="w-full sm:flex-1 font-semibold"
-                disabled={!dob || !gender || !name || isLoadingQuestions}
+                disabled={!dob || !gender || !name}
               >
-                {isLoadingQuestions ? (
-                  <>
-                    <LoadingSpinner className="mr-2 h-4 w-4 animate-spin" /> Loading Questions for Grade...
-                  </>
-                ) : (
-                  <>
-                    Start Assessment Questions <ArrowRight className="ml-2 h-4 w-4" />
-                  </>
-                )}
+                Start Assessment Questions <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </CardFooter>
           </Card>
@@ -761,17 +697,9 @@ export default function AssessmentPage() {
               onClick={handleProceedToQuestions}
               size="lg"
               className="w-full sm:flex-1 font-semibold"
-              disabled={!dob || !gender || !name || isLoadingQuestions}
+              disabled={!dob || !gender || !name}
             >
-              {isLoadingQuestions ? (
-                <>
-                  <LoadingSpinner className="mr-2 h-4 w-4 animate-spin" /> Loading Questions for Grade...
-                </>
-              ) : (
-                <>
-                  Start Assessment <ArrowRight className="ml-2 h-4 w-4" />
-                </>
-              )}
+              Start Assessment <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </CardFooter>
         </Card>

@@ -1,4 +1,4 @@
-import type { CareerSuggestion, GoalPlan, InsightXReportData, MentorMessage } from '@/lib/types';
+import type { CareerSuggestion, GoalPlan, InsightXReportData, MentorMessage, PathXploreData } from '@/lib/types';
 
 export const LOCAL_APP_STATE_KEY = 'path-genix-ui-state-v1';
 export const DEMO_USER_ID = 'demo-user-001';
@@ -43,6 +43,7 @@ export type LocalUserData = {
   }>;
   careerSuggestions?: CareerSuggestion[];
   insightXReport?: InsightXReportData;
+  pathXploreData?: PathXploreData;
   goalPlan?: GoalPlan;
   mentorChat?: MentorMessage[];
   careerReport?: LocalCareerReport;
