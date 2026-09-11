@@ -41,7 +41,7 @@ export function AppHeader({ title, showAuthButtons = true }: AppHeaderProps) {
 
   return (
     <>
-      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border bg-background px-4 sm:px-6">
+      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border/80 bg-background/85 backdrop-blur-md px-4 sm:px-6">
         <SidebarTrigger className="md:hidden" />
         <h1 className="text-xl md:text-2xl font-bold font-headline text-foreground">{title}</h1>
         <div className="ml-auto flex items-center gap-2">

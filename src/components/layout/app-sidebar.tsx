@@ -24,10 +24,10 @@ import Link from 'next/link';
 const navItems = [
   { href: '/', icon: Home, label: 'Home' },
   { href: '/assessment', icon: ClipboardCheck, label: 'InsightX Assessment' },
+  { href: '/reports', icon: FileText, label: 'InsightX Report' },
   { href: '/pathxplore', icon: Compass, label: 'PathXplore Career' },
   { href: '/goals', icon: Goal, label: 'GoalMint Planner' },
   { href: '/mentors', icon: Bot, label: 'MentorSuite AI' },
-  { href: '/reports', icon: FileText, label: 'My Reports' },
 ];
 
 export function AppSidebar() {

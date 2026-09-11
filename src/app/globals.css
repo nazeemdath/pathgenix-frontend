@@ -2,80 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 @layer base {
   :root {
-    --background: 34 100% 97%; /* Akshay's CREAM_BG #FFF8EF */
-    --foreground: 257 40% 17%; /* Akshay's NAVY_NAV #241A3D */
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 257 40% 17%;
+    --background: 36 28% 97%; /* Refined Ivory Cream #FAF7F2 - matches report warmth without yellow clash */
+    --foreground: 257 40% 16%; /* Akshay's Deep Brand Navy #241A3D */
+    --card: 0 0% 100%; /* Pure Crisp White */
+    --card-foreground: 257 40% 16%;
     --popover: 0 0% 100%;
-    --popover-foreground: 257 40% 17%;
-    --primary: 258 90% 66%; /* Akshay's Hero Violet #8B5CF6 */
+    --popover-foreground: 257 40% 16%;
+    --primary: 252 72% 59%; /* Akshay's Report Hero Royal Violet #6B4FE0 */
     --primary-foreground: 0 0% 100%; /* Crisp white text on primary */
-    --secondary: 257 25% 93%;
-    --secondary-foreground: 257 40% 17%;
-    --muted: 257 20% 93%;
+    --secondary: 257 20% 94%;
+    --secondary-foreground: 257 40% 16%;
+    --muted: 257 15% 94%;
     --muted-foreground: 257 15% 45%;
     --accent: 43 74% 66%; /* Akshay's GOLD_PILL #E9C46A */
-    --accent-foreground: 257 40% 17%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 257 20% 88%;
-    --input: 257 20% 88%;
-    --ring: 258 90% 66%;
-    --chart-1: 258 90% 66%; /* Violet */
+    --accent-foreground: 257 40% 16%;
+    --destructive: 348 83% 58%; /* Clean modern coral rose */
+    --destructive-foreground: 0 0% 100%;
+    --border: 257 15% 89%;
+    --input: 257 15% 89%;
+    --ring: 252 72% 59%;
+    --chart-1: 252 72% 59%; /* Royal Violet #6B4FE0 */
     --chart-2: 214 76% 53%; /* Electric Blue #2E7CE0 */
     --chart-3: 43 74% 66%;  /* Gold #E9C46A */
     --chart-4: 142 76% 36%; /* Emerald #16A34A */
-    --chart-5: 0 72% 51%;   /* Crimson #DC2626 */
-    --radius: 0.75rem;
-    --sidebar-background: 257 40% 16%; /* Akshay's NAVY_NAV #241A3D */
+    --chart-5: 348 83% 58%; /* Crimson Rose */
+    --radius: 0.875rem;
+    --sidebar-background: 257 40% 15%; /* Deep Brand Navy #211738 */
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 43 74% 66%; /* Gold #E9C46A */
-    --sidebar-primary-foreground: 257 40% 17%;
-    --sidebar-accent: 257 32% 25%;
+    --sidebar-primary-foreground: 257 40% 16%;
+    --sidebar-accent: 257 32% 23%;
     --sidebar-accent-foreground: 43 74% 66%;
-    --sidebar-border: 257 32% 22%;
-    --sidebar-ring: 258 90% 66%;
+    --sidebar-border: 257 30% 21%;
+    --sidebar-ring: 252 72% 59%;
   }
 
   .dark {
     --background: 257 40% 10%;
-    --foreground: 34 100% 97%;
-    --card: 257 40% 14%;
-    --card-foreground: 34 100% 97%;
+    --foreground: 36 28% 97%;
+    --card: 257 40% 13%;
+    --card-foreground: 36 28% 97%;
     --popover: 257 40% 12%;
-    --popover-foreground: 34 100% 97%;
-    --primary: 258 90% 66%;
+    --popover-foreground: 36 28% 97%;
+    --primary: 252 72% 64%;
     --primary-foreground: 0 0% 100%;
     --secondary: 257 30% 20%;
-    --secondary-foreground: 34 100% 97%;
+    --secondary-foreground: 36 28% 97%;
     --muted: 257 30% 20%;
     --muted-foreground: 257 15% 65%;
     --accent: 43 74% 66%;
-    --accent-foreground: 257 40% 17%;
-    --destructive: 0 62.8% 45%;
-    --destructive-foreground: 60 9.1% 97.8%;
+    --accent-foreground: 257 40% 16%;
+    --destructive: 348 75% 55%;
+    --destructive-foreground: 0 0% 100%;
     --border: 257 30% 22%;
     --input: 257 30% 22%;
-    --ring: 258 90% 66%;
-    --chart-1: 258 90% 66%;
+    --ring: 252 72% 64%;
+    --chart-1: 252 72% 64%;
     --chart-2: 214 76% 53%;
     --chart-3: 43 74% 66%;
     --chart-4: 142 76% 36%;
-    --chart-5: 0 72% 51%;
-    --sidebar-background: 257 45% 10%;
+    --chart-5: 348 75% 55%;
+    --sidebar-background: 257 45% 9%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 43 74% 66%;
-    --sidebar-primary-foreground: 257 40% 17%;
-    --sidebar-accent: 257 35% 20%;
+    --sidebar-primary-foreground: 257 40% 16%;
+    --sidebar-accent: 257 35% 18%;
     --sidebar-accent-foreground: 43 74% 66%;
-    --sidebar-border: 257 35% 18%;
-    --sidebar-ring: 258 90% 66%;
+    --sidebar-border: 257 35% 16%;
+    --sidebar-ring: 252 72% 64%;
   }
 }
 
@@ -85,5 +81,24 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .bg-hero-gradient {
+    background: linear-gradient(135deg, #6B4FE0 0%, #2E7CE0 100%);
+  }
+  .bg-hero-gradient-subtle {
+    background: linear-gradient(135deg, rgba(107, 79, 224, 0.08) 0%, rgba(46, 124, 224, 0.08) 100%);
+  }
+  .text-hero-gradient {
+    background: linear-gradient(135deg, #6B4FE0 0%, #2E7CE0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .gold-badge {
+    background-color: #E9C46A;
+    color: #241A3D;
+    font-weight: 700;
   }
 }

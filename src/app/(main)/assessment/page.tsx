@@ -405,9 +405,9 @@ export default function AssessmentPage() {
       setSubmissionStatus('success');
       toast({
         title: 'Assessment Complete!',
-        description: 'Your personalized career analysis is ready.',
+        description: 'Your personalized InsightX diagnostic report is ready.',
       });
-      router.push('/pathxplore');
+      router.push('/reports');
     } else {
       setSubmissionStatus('failed');
       toast({
@@ -860,12 +860,12 @@ export default function AssessmentPage() {
                   )}
                 </div>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  Your previous career matches, SWOT analysis, and psychometrics are active on PathXplore. Retaking will overwrite these scores with your newest answers.
+                  Your previous psychometrics and diagnostic report are active. Retaking will overwrite these scores with your newest answers.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto shrink-0">
                 <Button variant="outline" size="sm" asChild className="font-semibold">
-                  <Link href="/pathxplore">View My Results</Link>
+                  <Link href="/reports">View My Report</Link>
                 </Button>
                 <Button size="sm" onClick={handleStartAssessment} className="font-semibold shadow-xs">
                   <RefreshCw className="mr-1.5 h-3.5 w-3.5" /> Retake Test
@@ -912,8 +912,8 @@ export default function AssessmentPage() {
           {hasExistingAssessment ? (
             <>
               <Button variant="outline" asChild size="lg" className="w-full sm:w-1/2 font-semibold">
-                <Link href="/pathxplore">
-                  View Previous Results
+                <Link href="/reports">
+                  View Previous Report
                 </Link>
               </Button>
               <Button onClick={handleStartAssessment} className="w-full sm:w-1/2 font-semibold" size="lg">
